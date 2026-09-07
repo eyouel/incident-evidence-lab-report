@@ -1,0 +1,7 @@
+Incident Evidence Lab report
+
+The application examples and evidence are original synthetic project material. This report publication does not grant a software license or apply the proposed MIT license. The implementation remains private. No downloaded runtime, model weights, Java jars, or dependency code is distributed in this report.
+
+The project uses Python (PSF license), Spring/Spring Boot, Flyway community, OpenTelemetry and Maven (Apache-2.0), PostgreSQL and JDBC (their PostgreSQL/BSD licenses), Temurin/OpenJDK (GPL-2.0 with Classpath Exception), and test/build dependencies under their individual licenses. The original dependency notices, versions, POM references, and hashes remain with the private execution records. The static renderer and assets are original project code.
+
+The selected local runtime and model identities and license reference appear in metadata/protocol.json. Those components retain their own licenses and are not included here. A public download is not permission to relicense another author’s work.
