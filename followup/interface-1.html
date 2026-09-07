@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xhEFu2qNMwkJxuhWAS4iBYKUPmGRexiW1uxxPZ8Obz8='; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>Which records keep answers supported? · Incident Evidence Lab</title><style>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xhEFu2qNMwkJxuhWAS4iBYKUPmGRexiW1uxxPZ8Obz8='; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>Interface check did not pass · Incident Evidence Lab</title><style>
 :root {
   color-scheme: light;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -231,13 +231,159 @@ blockquote > span { display: block; margin-bottom: 5px; font-size: .86rem; }
   @page { margin: 17mm; }
 }
 </style></head>
-<body><a class="skip-link" href="#main">Skip to the report</a><header class="site-header"><div class="brand">Incident Evidence Lab<span>Make the evidence easier to understand.</span></div><nav class="nav" aria-label="Report sections"><a href="#results">Results</a><a href="#method">Method</a><a href="#reproduce">Evidence and versions</a><a href="#limits">Limits</a><button type="button" data-print data-enhancement hidden>Print summary</button></nav></header>
-<main id="main"><section class="section" id="interface-followup"><h2>A separate follow-up is now available</h2><p>The first experiment below is unchanged. <a href="followup/index.html">Read the interface diagnosis and actual follow-up results</a>, including any failures and unattempted trials.</p><p><a href="v1-index.html">Open the original landing page without this notice</a>.</p></section><section class="hero"><p class="eyebrow">An evidence-change experiment</p><h1>Keep the records that let you answer.</h1><p class="lead">Removing outcome records changed supported answers from 5 to 2 in the fixed-rule test. Adding saved outcome logs back restored 5 supported answers and added 2,694 record bytes.</p><p>Publication <code>local-evidence-2026-09-07-v1</code></p></section><section class="section" id="problem"><h2>What problem does this lab test?</h2><p>An application accepts work, calls another service, and asks a worker to finish it. The application writes records about these steps. A record about completion can disappear even when the work finished.</p><p>If we keep fewer records, can we still tell whether work finished or failed? We test that question before recommending which records to keep. Missing records alone cannot prove failed work.</p><p>This application and its incident examples were created for this project. They contain synthetic data. No workplace incident or customer data is used.</p></section>
-<section class="section" id="results"><h2>Four kinds of evidence, kept separate</h2><div class="two"><article class="panel"><h3>Fixed rules on five authored cases</h3><p>One fixed procedure reads each selection of saved evidence. The outcome, required failure location, and references must pass the same checks.</p><p><a href="fixture/index.html">Compare every case and open its records</a></p></article><article class="panel"><h3>One Java capture, replayed</h3><p>The separate saved Java operation changed from completed to unknown to completed when the investigation read original, reduced, and restored-status evidence. The status restoration added 1,106 record bytes. This is a replay of one real application capture, not a new Java execution or an accuracy estimate.</p><p><a href="java/index.html">Inspect the Java evidence comparison</a></p></article></div>
-<div class="two"><article class="panel"><h3>Mock controls</h3><p>Local tests check rejected tools, limits, missing input, isolation, and stopped execution using synthetic doubles. A mock result checks wiring; it is not a model diagnosis. These checks are not included in the model scores.</p></article><article class="panel"><h3>Actual local-model execution</h3><p>16 planned trials; 16 attempted; 0 completed with valid output; 16 failed or invalid; 0 unattempted.</p><p>Setup compatibility: 7 actual generations, passed. These unrelated synthetic checks are excluded from diagnostic scores.</p><p>Stop reason: <strong>None recorded</strong>.</p><p>Finishing is not the same as answering correctly. Failed answers and unused slots remain visible. Setup checks are separate from scored comparisons.</p><p><a href="local/index.html">Read the actual model proposals, checks, and scores</a></p></article></div></section>
-<section class="section" id="setup"><h2>Keep the setup failures visible</h2><p>These real local-model checks use unrelated synthetic work. They test the read, answer, and checker connection. They do not count toward the incident comparison. Later setup work does not erase an earlier failed attempt.</p><ol><li><a href="local/setup-1.html">local-unrelated-compatibility-v1</a>: Did not pass the setup check; 1 recorded local calls; 0 evidence queries.</li><li><a href="local/setup-2.html">local-unrelated-compatibility-v2</a>: Did not pass the setup check; 3 recorded local calls; 2 evidence queries.</li><li><a href="local/setup-3.html">local-unrelated-compatibility-v3</a>: Passed the setup check; 3 recorded local calls; 2 evidence queries.</li></ol></section><section class="section" id="method"><h2>How the parts work</h2><ol><li><strong>The application creates evidence.</strong> The Java example accepts an order, calls inventory, and commits one worker result. Traces, logs, and saved status describe the work.</li><li><strong>The replay chooses records.</strong> Original records, fewer records, and selected restorations keep the same incident and time cutoff.</li><li><strong>A trusted reader enforces limits.</strong> The investigator can request only permitted evidence reads. It gets no file, shell, browser, credential, or answer-key access.</li><li><strong>The investigator proposes an answer.</strong> Each model trial starts with a fresh conversation. Plain and candidate policies use the predeclared order and one selected model.</li><li><strong>A separate checker verifies structured claims.</strong> It checks evidence references, work identity, and times. It cannot verify every sentence or a claimed cause.</li><li><strong>A separate evaluator scores the saved answer.</strong> Fixture scores check outcome and required failure location. Java scores check outcome only. The report keeps these scores separate.</li></ol><p>A final answer, a checker verdict, and an evaluator score are three different records. Open the model trial to inspect all three. The development assistant did not act as the evaluated investigator.</p></section>
-<section class="section" id="reproduce"><h2>Inspect and reproduce the comparison</h2><ol><li>Open the fixed-rule or Java report. Choose original records, fewer records, or a restoration. Expand an answer, then follow its record links.</li><li>Open the local-model report. Read every planned slot in order. Check the original structured proposal separately from the checker and evaluator. Unattempted slots have no substituted answers.</li><li>Use the compact saved JSON, protocol settings, runtime identity, and publication manifest below to check what this page reports.</li></ol><p>Selected model: qwen3:8b. Runtime: 0.33.3. Quantization: Q4_K_M.</p><p>The source repository is private. This report supports inspection of published results; it does not offer anonymous access to a runnable source checkout. Full execution reproduction requires the private source and the named original inputs. Rerunning a model may produce a different answer.</p><ul><li><a href="metadata/protocol.json">Published protocol settings and execution identity</a></li><li><a href="metadata/runtime.json">Runtime and local boundary observations</a></li><li><a href="manifest.json">Publication file hashes and source artifact identities</a></li><li><a href="NOTICES.txt">Attribution and license limits</a></li></ul></section>
-<section class="section" id="limits"><h2>What these results cannot establish</h2><ul><li>Five synthetic cases and one captured Java operation do not establish production accuracy or universal compatibility.</li><li>Restoration adds records saved earlier. It does not create records that were never collected, repair an application, or explain every missing trace.</li><li>A smaller evidence file is not measured financial savings. Local inference has no provider-token charge; electricity, hardware, and total operating cost are not measured here.</li><li>Local-model results are separate from the unexecuted OpenAI API and subscription-investigator experiments. Neither of those experiments is complete.</li><li>The site is static. Its controls read saved data only. It has no model endpoint, uploads, tracking, or execution button.</li><li>Published copies omit private fields and raw model reasoning. Original execution hashes remain identifiers of the original inputs, not hashes of these sanitized copies.</li></ul></section><footer class="footer"><strong>Built from saved results.</strong> These controls do not run new experiments or change the application. No records leave this page through the report controls. Published evidence copies stay available below the summaries.</footer></main><script>
+<body><a class="skip-link" href="#main">Skip to the report</a><header class="site-header"><div class="brand">Incident Evidence Lab<span>Make the evidence easier to understand.</span></div><nav class="nav" aria-label="Report sections"><a href="index.html">Follow-up summary</a><a href="#model">Model and checker</a><a href="#evaluation">Evaluator</a><button type="button" data-print data-enhancement hidden>Print summary</button></nav></header>
+<main id="main"><section class="hero"><p class="eyebrow">Saved local execution slot · Unscored interface check</p><h1>Interface check did not pass</h1><p>The model proposal, checker decision and evaluator result remain separate below.</p></section><section class="section" id="model"><h2>What the model read and proposed</h2><p>No model proposal was returned. The host recorded an execution failure; this is not a model diagnosis or an abstention.</p><details><summary>Host execution record, not a model answer</summary><pre>{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;run_id&quot;: &quot;6648b60bdc474fb48a0d9dcd179d27b2&quot;,
+  &quot;bundle_hash&quot;: &quot;98b8f90e52bb524a3845ecc5974e5836f2f2f86630d1caeac4a06ed51cb7a5e2&quot;,
+  &quot;investigator_hash&quot;: &quot;d3813a4c4b7f263153340df1add9841b3a652b100a8f2414b63c3f8fb1ad8f12&quot;,
+  &quot;investigator_image_id&quot;: &quot;sha256:10612d3164014ec26db5d33a9a03c352fd583b2d8b4c691d806528b08520abf5&quot;,
+  &quot;policy&quot;: &quot;plain&quot;,
+  &quot;isolation&quot;: &quot;docker&quot;,
+  &quot;container_gate_verified&quot;: true,
+  &quot;execution&quot;: &quot;local_model&quot;,
+  &quot;terminal&quot;: &quot;completed&quot;,
+  &quot;process_exit_code&quot;: 0,
+  &quot;elapsed_ms&quot;: 4108.168,
+  &quot;query_calls&quot;: 0,
+  &quot;query_bytes&quot;: 0,
+  &quot;cost_basis&quot;: &quot;local_operating_cost_not_measured&quot;,
+  &quot;model_cost_usd&quot;: null,
+  &quot;stderr_present&quot;: false,
+  &quot;incident&quot;: {
+    &quot;incident_id&quot;: &quot;archive-review-1&quot;,
+    &quot;operation_id&quot;: &quot;archive-job-1&quot;,
+    &quot;start&quot;: 10,
+    &quot;cutoff&quot;: 50,
+    &quot;semantics&quot;: {
+      &quot;accepted&quot;: &quot;A job was recorded; this does not mean the archive was stored.&quot;,
+      &quot;completed&quot;: &quot;The archive job recorded a completed storage operation.&quot;,
+      &quot;failed&quot;: &quot;The job recorded a final failure.&quot;,
+      &quot;pending&quot;: &quot;A positive observation reports that the job is still pending.&quot;,
+      &quot;unknown&quot;: &quot;Allowed observations do not establish one consistent outcome.&quot;,
+      &quot;attempt_id&quot;: &quot;One attempt at the archive job.&quot;,
+      &quot;idempotency&quot;: &quot;The archive operation has one durable effect.&quot;
+    }
+  },
+  &quot;result&quot;: {
+    &quot;status&quot;: &quot;failed&quot;,
+    &quot;outcome&quot;: &quot;unknown&quot;,
+    &quot;location&quot;: &quot;unknown&quot;,
+    &quot;mechanism&quot;: &quot;unknown&quot;,
+    &quot;findings&quot;: [],
+    &quot;candidate_explanations&quot;: [
+      &quot;operation_not_completed&quot;,
+      &quot;completion_evidence_missing&quot;
+    ],
+    &quot;limits&quot;: [
+      &quot;Provider failure: http_400&quot;
+    ],
+    &quot;next_check&quot;: null
+  },
+  &quot;proposed_result&quot;: null,
+  &quot;checker_verdict&quot;: {
+    &quot;status&quot;: &quot;no_model_proposal&quot;,
+    &quot;scope&quot;: &quot;Structured diagnostic fields, returned evidence references, operation identity, and evidence times. Arbitrary narrative causality is not verified.&quot;,
+    &quot;rejected_proposal_count&quot;: 0,
+    &quot;errors&quot;: []
+  },
+  &quot;queries&quot;: [],
+  &quot;query_requests&quot;: [],
+  &quot;model_events&quot;: [
+    {
+      &quot;local_call_id&quot;: &quot;local_0001&quot;,
+      &quot;mode&quot;: &quot;local_model&quot;,
+      &quot;model&quot;: &quot;qwen3:8b&quot;,
+      &quot;status&quot;: &quot;failed&quot;,
+      &quot;error_code&quot;: &quot;http_400&quot;,
+      &quot;elapsed_ms&quot;: 2674.22,
+      &quot;model_cost_usd&quot;: null,
+      &quot;cost_basis&quot;: &quot;local_inference_operating_cost_not_measured&quot;,
+      &quot;runtime_completion_unknown&quot;: false,
+      &quot;usage&quot;: null,
+      &quot;observed_usage&quot;: null
+    }
+  ],
+  &quot;evidence_validity_errors&quot;: [],
+  &quot;execution_clocks&quot;: {
+    &quot;clock&quot;: &quot;monotonic_execution_time&quot;,
+    &quot;evidence_times&quot;: &quot;Event and query-availability timestamps restrict historical evidence. They do not pause or extend execution budgets.&quot;,
+    &quot;provider_wait_ms&quot;: 2674.775,
+    &quot;broker&quot;: {
+      &quot;budget_seconds&quot;: 300,
+      &quot;elapsed_ms&quot;: 4108.68,
+      &quot;expiry&quot;: &quot;A budget_exhausted reply closes the reader. The host rejects subsequent worker actions before any provider invocation or reservation.&quot;,
+      &quot;provider_wait_is_charged&quot;: true,
+      &quot;starts&quot;: &quot;Broker construction, before runtime staging and investigator startup.&quot;
+    },
+    &quot;runner&quot;: {
+      &quot;budget_seconds&quot;: 300,
+      &quot;expired&quot;: false,
+      &quot;expiry&quot;: &quot;Checked between RPC actions. A blocking provider call is bounded separately and can extend observed elapsed time.&quot;,
+      &quot;starts&quot;: &quot;After broker construction, before runtime staging and investigator startup.&quot;
+    },
+    &quot;provider&quot;: {
+      &quot;request_budget_seconds&quot;: 120,
+      &quot;run_budget_seconds&quot;: 300,
+      &quot;description&quot;: &quot;One provider and one 3600-second clock cover four interface trials plus the conditional sixteen regressions. Sequential monotonic clocks: batch starts at LocalProvider construction (3600s); each run starts before investigator startup (300s); each HTTP request includes child startup and is capped by the minimum of request120s, remaining run and remaining batch. The unchanged broker starts at construction, includes model waiting, and has300s here (API v3 had30s). SQL remains2s; runner300s is checked between RPC actions. Transport cleanup can add at most2s; investigator cleanup at most4s. A timely evidence response may support a later final response within the run deadline. Historical evidence cutoffs are unchanged and do not extend execution time.&quot;
+    }
+  },
+  &quot;execution_stop&quot;: null
+}</pre></details></section><section class="section" id="checker"><h2>Separate checker verdict</h2><pre>{
+  &quot;status&quot;: &quot;no_model_proposal&quot;,
+  &quot;scope&quot;: &quot;Structured diagnostic fields, returned evidence references, operation identity, and evidence times. Arbitrary narrative causality is not verified.&quot;,
+  &quot;rejected_proposal_count&quot;: 0,
+  &quot;errors&quot;: []
+}</pre></section><section class="section" id="generated-actions"><h2>Original generated actions and adapter validation</h2><p>An action rejected by the adapter may never reach the checker. That is separate from a checker rejecting a proposal. These are allowlisted copies of the original structured actions; no field is repaired.</p><details><summary>Expand the saved actions and adapter outcomes</summary><pre>[
+  {
+    &quot;call_id&quot;: &quot;local_0001&quot;,
+    &quot;model&quot;: null,
+    &quot;done&quot;: null,
+    &quot;done_reason&quot;: null,
+    &quot;response_sha256&quot;: null,
+    &quot;response_bytes&quot;: null,
+    &quot;adapter_error&quot;: &quot;http_400&quot;,
+    &quot;action&quot;: null
+  }
+]</pre></details></section><section class="section" id="evaluation"><h2>Separate evaluator result</h2><pre>{
+  &quot;answered&quot;: false,
+  &quot;evidence_valid&quot;: true,
+  &quot;execution_failed&quot;: true,
+  &quot;identifiable&quot;: true,
+  &quot;location_correct&quot;: true,
+  &quot;supported_resolution&quot;: false,
+  &quot;unnecessary_abstention&quot;: false,
+  &quot;unsupported_unique_cause&quot;: false,
+  &quot;wrong_or_unsupported_answer&quot;: false,
+  &quot;rejected_proposals&quot;: 0,
+  &quot;model_abstained&quot;: false,
+  &quot;evaluation_scope&quot;: &quot;fixture_full_diagnostic&quot;,
+  &quot;checked_result_accepted&quot;: false,
+  &quot;scope_note&quot;: &quot;Outcome and location are graded. Unknown location is an abstention requirement, not a positive location witness.&quot;,
+  &quot;wrong_or_unsupported_location&quot;: false,
+  &quot;reference_search_complete&quot;: true,
+  &quot;classification&quot;: [
+    &quot;provider_failure_classification_unknown&quot;
+  ],
+  &quot;required_dimensions&quot;: [
+    &quot;outcome&quot;,
+    &quot;location&quot;
+  ],
+  &quot;missing_required_dimensions&quot;: [],
+  &quot;positive_witness_dimensions&quot;: [
+    &quot;outcome&quot;
+  ]
+}</pre></section><section class="section" id="checks"><h2>Declared interface checks</h2><p>A valid unresolved answer can pass an uncertainty check. It does not count as a supported resolution.</p><pre>{
+  &quot;checker_accepted&quot;: false,
+  &quot;correct_resolution_status&quot;: false,
+  &quot;evidence_valid&quot;: true,
+  &quot;execution_completed&quot;: true,
+  &quot;expected_location&quot;: false,
+  &quot;expected_outcome&quot;: false,
+  &quot;inventory_read&quot;: false,
+  &quot;model_proposal_present&quot;: false,
+  &quot;required_observations_read&quot;: false
+}</pre></section><footer class="footer"><strong>Built from saved results.</strong> These controls do not run new experiments or change the application. No records leave this page through the report controls. Sanitized published evidence stays available below the summaries.</footer></main><script>
 (() => {
   'use strict';
   const panels = Array.from(document.querySelectorAll('[data-view-panel]'));
