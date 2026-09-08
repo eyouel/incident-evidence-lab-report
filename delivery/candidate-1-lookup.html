@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xhEFu2qNMwkJxuhWAS4iBYKUPmGRexiW1uxxPZ8Obz8='; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>Incident Evidence Lab — native evidence, checked claims · Incident Evidence Lab</title><style>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xhEFu2qNMwkJxuhWAS4iBYKUPmGRexiW1uxxPZ8Obz8='; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>candidate-1-lookup · Incident Evidence Lab</title><style>
 :root {
   color-scheme: light;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -231,25 +231,260 @@ blockquote > span { display: block; margin-bottom: 5px; font-size: .86rem; }
   @page { margin: 17mm; }
 }
 </style></head>
-<body><a class="skip-link" href="#main">Skip to the report</a><header class="site-header"><div class="brand">Incident Evidence Lab<span>Make the evidence easier to understand.</span></div><nav class="nav" aria-label="Report sections"><a href="#current">Current result</a><a href="#gate">Cases</a><a href="#changes">Changes</a><a href="#reproduce">Reproduce</a><button type="button" data-print data-enhancement hidden>Print summary</button></nav></header>
-<main id="main"><section class="hero"><p class="eyebrow">Incident Evidence Lab · Measured local prototype</p><h1>The model read the evidence.<br>Its diagnosis still needed checking.</h1><p class="lead">A missing completion record does not prove that the work failed. This lab tests which saved observations keep an answer supported—and whether a model knows when it cannot tell.</p><p><strong>Current result: the native connection works; the full AI demonstration is incomplete.</strong> The final candidate passed both small tasks, then passed 1 of four required incident checks.</p><p>Publication: <code>local-native-delivery-2026-09-07-v1</code>.</p></section><section class="section" id="current"><h2>What actually happened</h2><p>The model independently asked for an inventory and a status record, then reported the returned dispatch code with its record reference. On a separate supplied-observation task, it also reported the requested value correctly. These are useful, limited demonstrations.</p><p>In the four incident checks, it found a completion witness correctly once. It then invented a dependency location for a recorded failure. In both uncertainty cases it inspected only an acceptance record, skipped the remaining logs, and claimed completion. The trusted checker rejected those three proposals.</p><p><strong>The failed gate stopped the next stage.</strong> All 16 development-regression slots remain unattempted. No fresh Java capture or new Java model trial ran. No expected answer filled an unused slot.</p></section><section class="section" id="gate"><h2>Four cases, with separate judgments</h2><p>All four returned structurally valid proposals. Only one passed the claim checker and full task requirements. Neither uncertainty case produced a valid unresolved answer. These were known development cases, not an unseen accuracy test.</p><div class="table-wrap"><table><thead><tr><th>Case</th><th>Model outcome</th><th>Checker</th><th>Full check</th></tr></thead><tbody><tr><td><a href="delivery/interface-1.html">saved_status</a></td><td>completed</td><td>accepted</td><td>Pass</td></tr><tr><td><a href="delivery/interface-2.html">logs_status_unavailable</a></td><td>failed</td><td>rejected</td><td>Fail</td></tr><tr><td><a href="delivery/interface-3.html">no_terminal_witness</a></td><td>completed</td><td>rejected</td><td>Fail</td></tr><tr><td><a href="delivery/interface-4.html">contradictory_terminals</a></td><td>completed</td><td>rejected</td><td>Fail</td></tr></tbody></table></div><p>One supported resolution; zero valid uncertainty results; three checker rejections. A rejection is not the model choosing to abstain. <a href="delivery/summary.json">Read the complete sanitized records and all unattempted slots</a>.</p></section><section class="section" id="changes"><h2>The correction and the failed candidates</h2><p>The original native template inserted a Go-style function value inside a JSON wrapper. The HTTP response was valid JSON, but the declaration inside the rendered prompt was not. The project alias changes only the tool expression from <code>{{ .Function }}</code> to <code>{{ json .Function }}</code>. The pinned runtime provides this JSON helper. This is a local correction, not a claimed upstream release fix.</p><p>A shortened format example is <code>{"type":"function","function":{list_sources ...}}</code>; the corrected declaration contains a quoted <code>"name"</code> property inside a valid JSON function object. The strict inventory comparison still checks names, parameter definitions, and required fields. Full host validation retains constraints the runtime schema omits.</p><ol><li><strong>candidate-1</strong>: Template JSON serialization only. Lookup used the code in an explanation instead of a finding; interpretation used only a query receipt for its outcome claim.<br><a href="delivery/candidate-1-lookup.html">lookup: fail</a> · <a href="delivery/candidate-1-interpretation.html">interpretation: fail</a></li><li><strong>candidate-2</strong>: Added shared field and citation clarification. Both tasks cited valid outcome records but omitted the requested code.<br><a href="delivery/candidate-2-lookup.html">lookup: fail</a> · <a href="delivery/candidate-2-interpretation.html">interpretation: fail</a></li><li><strong>candidate-3</strong>: Moved the same public task instructions into the user message. Lookup still omitted the code; interpretation invented a dispatch_code claim type and was rejected by the adapter.<br><a href="delivery/candidate-3-lookup.html">lookup: fail</a> · <a href="delivery/candidate-3-interpretation.html">interpretation: fail</a></li><li><strong>candidate-4</strong>: Added native report-field descriptions. Both small tasks passed; the four incident cases then exposed three unsupported diagnoses.<br><a href="delivery/candidate-4-lookup.html">lookup: pass</a> · <a href="delivery/candidate-4-interpretation.html">interpretation: pass</a></li></ol><p>All four lookup attempts chose an evidence read. The first three candidates failed the exact value/reporting requirements. The last passed the two tasks but failed the incident gate. The sequence does not isolate one universal cause or establish reliability.</p></section><section class="section" id="method"><h2>How this works</h2><ol><li>The application or synthetic fixture provides a public operation contract and cutoff.</li><li>A fresh isolated investigator asks for permitted evidence. The model has no shell, filesystem, repository, oracle, credential, or network tools.</li><li>The trusted broker enforces source, operation, time, query and byte limits. It returns the actual observations.</li><li>The model submits a proposal. The host checks its arguments and citations without changing them.</li><li>A separate evaluator compares the accepted claim with established outcomes. Reports keep that score separate from format acceptance and model uncertainty.</li></ol><p>The two small tasks used a direct trusted-host loop; the four incident cases used the pinned isolated Docker investigator. Native chat preserves actual assistant tool calls and tool-role replies. <code>submit_diagnosis</code> ends the investigation; it is not an eighth evidence reader. No final-answer grammar constrains native tool selection. The original seven readers, frozen expectations and historical cutoffs remain unchanged.</p></section><section class="section" id="measurements"><h2>Measured effort and limits</h2><p>64 application-to-runtime HTTP attempts: 25 metadata, 2 alias-creation, 8 render-only, and 29 generations. Reported usage: 98,898 prompt-evaluation tokens and 2,007 generated tokens; 267.66 seconds of aggregate runtime-reported duration for those generation requests.</p><p>The model requested 17 broker reads: 8 inventories, 8 reads returning observation records, and one unavailable-source read. These returned 14,642 serialized response bytes. Supplied interpretation preludes are counted separately in the records.</p><p>The shared clock stopped at 1021.56 seconds. It includes setup and offline work, so it is a conservative bound on runtime activity. Token totals include repeated context; bytes include response envelopes. Neither measures unique information or money saved. Underlying runtime HTTP activity and electricity, hardware and operating cost remain unknown.</p><p>Used limits: sequential local execution, 2,048 output tokens per request, 32,768 context tokens, 120 seconds per request, 300 seconds per investigation. The parent ceiling was four candidates, 640 generations, 1,600 HTTP attempts and four hours; no counter was reset. Two setup failures were preserved: a protected blob timestamp write, then an overly strict comparison of provenance and parameter ordering. The corrected setup reused unchanged local weight bytes.</p></section><section class="section" id="identity"><h2>Exact model and runtime</h2><p>Ollama 0.33.3; Qwen3 8B Q4_K_M; temperature 0, seed 0, thinking disabled. Stop tokens, top-k 20, top-p 0.95 and repeat penalty 1 were preserved. The alias uses copy-on-write local clones of the original weights. No model was pulled, replaced or requantized.</p><details><summary>Inspect model, template and weight identities</summary><pre>{
-  &quot;model&quot;: &quot;ielab-qwen3-8b-tools-json:v1&quot;,
-  &quot;digest&quot;: &quot;e456fd3421017075d848f19344072c0c92fc2b95405d3e7ad4fc44c41821d274&quot;,
-  &quot;quantization&quot;: &quot;Q4_K_M&quot;,
-  &quot;template_sha256&quot;: &quot;4c287210ed61f985a48533cc08998c4513ffe26cb6e2b2a4ff394ba14fab26fd&quot;,
-  &quot;runtime_version&quot;: &quot;0.33.3&quot;,
-  &quot;runtime_binary_sha256&quot;: &quot;75b6b83ab9c06712c7097807c91d2bb86a3ef3dd143d59359a5fbb3314970c0a&quot;,
-  &quot;original_digest&quot;: &quot;500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41&quot;,
-  &quot;original_template_sha256&quot;: &quot;ae370d884f108d16e7cc8fd5259ebc5773a0afa6e078b11f4ed7e39a27e0dfc4&quot;,
-  &quot;weights_reused_via_apfs_clones&quot;: true,
-  &quot;weight_layers&quot;: [
+<body><a class="skip-link" href="#main">Skip to the report</a><header class="site-header"><div class="brand">Incident Evidence Lab<span>Make the evidence easier to understand.</span></div><nav class="nav" aria-label="Report sections"><a href="index.html">Current summary</a><a href="#evidence">Evidence</a><a href="#actions">Actions</a><button type="button" data-print data-enhancement hidden>Print summary</button></nav></header>
+<main id="main"><section class="hero"><p class="eyebrow">Actual local inference · Unscored synthetic task</p><h1>candidate-1-lookup</h1><p>Did not pass all task requirements.</p><p>Model-chosen observation reads: 1. Inventory reads: 1. Generations: 3.</p></section><section class="section" id="evidence"><h2>Evidence and proposal</h2><p>The model chose its own inventory and evidence requests. The host supplied no initial observation.</p><p>This diagnostic used a direct trusted-host loop and the restricted local model runtime. No separate investigator-process exit was observed. This page is a derived presentation; the original adapter and evaluator records are separate.</p><div class="result-grid"><div><h4>What the records support</h4><p>The investigation failed or stopped. This does not prove that the application failed.</p><div class="finding"><p>The investigator cited these records for its reported outcome.</p><div class="chips"><a class="evidence-link" data-evidence-link href="#diagnostic-query-1">Open q002</a> <a class="evidence-link" data-evidence-link href="#diagnostic-query-1-record-0">Open parcel-amber-observation</a></div><details class="technical"><summary>Original investigator note</summary><p>Saved wording from the investigator. A valid reference does not verify every sentence.</p><p>The parcel operation recorded completion.</p></details></div></div><div><h4>What remains open</h4><p>The result does not establish a failure location.</p><p>The exact cause is not established.</p><p>These are possibilities, not verified causes:</p><ul><li>The operation completed successfully with the dispatch code violet-47-copper.</li></ul></div></div><div class="callout"><h4>What the model proposed and what the checker decided</h4><p>Accepted by the evidence checker.</p><p>The checker is a separate program. Its protection is not evidence that the model avoided an unsupported answer. It does not verify every sentence.</p><details class="technical"><summary>Model’s original structured proposal (redacted)</summary><pre>{
+  &quot;status&quot;: &quot;resolved&quot;,
+  &quot;outcome&quot;: &quot;completed&quot;,
+  &quot;location&quot;: &quot;unknown&quot;,
+  &quot;mechanism&quot;: &quot;unknown&quot;,
+  &quot;findings&quot;: [
     {
-      &quot;mediaType&quot;: &quot;application/vnd.ollama.image.model&quot;,
-      &quot;digest&quot;: &quot;sha256:a3de86cd1c132c822487ededd47a324c50491393e6565cd14bafa40d0b8e686f&quot;,
-      &quot;size&quot;: 5225374496
+      &quot;claim_type&quot;: &quot;outcome&quot;,
+      &quot;text&quot;: &quot;The parcel operation recorded completion.&quot;,
+      &quot;evidence_ids&quot;: [
+        &quot;q002&quot;,
+        &quot;parcel-amber-observation&quot;
+      ]
     }
-  ]
-}</pre></details><p>Official references: <code>github.com/ollama/ollama/blob/v0.33.3/template/template.go</code>; <code>docs.ollama.com/modelfile</code>; <code>docs.ollama.com/capabilities/tool-calling</code>.</p></section><section class="section" id="reproduce"><h2>Reproduction and earlier evidence</h2><p>A source-only export ran the complete test suite and 25 fixed-rule Docker investigations using the pinned local image. Original fixture evidence supported 5 of 5 diagnoses; reduced evidence supported 2 of 5, with no invalid fixture result. Imports were verified inside the export with editable hooks disabled. Existing interpreter/dependency installations were reused; no ignored approval or private reviewer input was required. This was same-machine reproduction, not a new model trial or outside review.</p><p>The combined supported suite passed 608 tests from a source-only export. After final offline setup-guard and report-text corrections, 68 affected tests passed. These groups overlap and are not added together. No test was skipped. The first collection attempt failed on a missing optional dependency search path; that preserved failure was corrected using already installed packages.</p><p>The private source contains the exact local-native setup and candidate commands, pinned dependencies and a source-only reproduction guide. They need authorized source access and the already installed assets. This public static site offers inspectable results, not anonymous source access or an execution endpoint. A same-machine check is not an outside review.</p><p>Earlier fixed-rule replay of a verified Java completion-loss capture established completed → unknown → completed after status restoration. The previous raw-model Java trials failed. This delivery did not run fresh Java capture or model views because its interface gate failed.</p><ul><li><a href="java/index.html">Earlier actual Java capture and fixed-rule evidence comparison</a></li><li><a href="fixture/index.html">Fixed-rule diagnostic regression</a></li><li><a href="v5-index.html">Unchanged previous overview and historical model failures</a></li><li><a href="native/index.html">Earlier captured native preflight failure</a></li><li><a href="manifest.json">Publication file identities</a> · <a href="NOTICES.txt">Third-party notices and license limits</a></li></ul></section><section class="section" id="limits"><h2>What remains unverified</h2><p>The complete evidence-removal/restoration AI demonstration is not complete. Native evidence access and one small interpretation task passed, but appropriate uncertainty and the complete incident gate did not. The 16 comparisons, fresh Java model views, policy advantage, general reliability and production adoption remain unestablished.</p><p>The demonstrated engineering decision is to keep the evidence checker and uncertainty gate in front of downstream claims. Valid JSON, successful tool use, and a correct outcome field can still accompany an unsupported answer.</p><p>No paid application service, API key, cloud inference, new download, or subscription-investigator run was used. API approval remains revoked. Private captures, prompts, reasoning, reviewer material, account data, binaries and weights are excluded. This site has no uploads, analytics or public inference endpoint.</p></section><footer class="footer"><strong>Built from saved results.</strong> These controls do not run new experiments or change the application. No records leave this page through the report controls. Original data stays available below the summaries.</footer></main><script>
+  ],
+  &quot;candidate_explanations&quot;: [
+    &quot;The operation completed successfully with the dispatch code violet-47-copper.&quot;
+  ],
+  &quot;limits&quot;: [],
+  &quot;next_check&quot;: null
+}</pre></details><details class="technical"><summary>Checker result and failed checks</summary><pre>{
+  &quot;status&quot;: &quot;accepted&quot;,
+  &quot;errors&quot;: []
+}</pre></details></div><div class="callout"><h4>What you can check next</h4><p>No further query was proposed in the saved result. Review the records and limits before taking action.</p></div>
+<div class="metric"><span>Local model inference</span><span>2 queries</span><span>1,711 response bytes</span><span>22,592.5 ms</span><span>3 recorded model events</span><span>Recorded model cost: Not recorded</span></div>
+<p class="muted">Query order shows what the investigator read. Record times can use different clocks. Computer and storage costs are not included in the model-cost field.</p>
+<h4>Follow the queries and open their records</h4><details class="query-card" id="diagnostic-query-0" tabindex="-1" data-query-status="ok_with_records"><summary><span>1. Find the available record sources</span><span class="badge tone-neutral">Records returned</span></summary><p>The source returned the records shown below.</p><p class="muted">Source: Source list · 1 returned items · 607 response bytes · 0.03 ms</p><div class="record" id="diagnostic-query-0-record-0" tabindex="-1"><strong>Source dispatch-register</strong><p>status · available</p><details class="technical"><summary>Original source fields</summary><pre>{
+  &quot;source_id&quot;: &quot;dispatch-register&quot;,
+  &quot;kind&quot;: &quot;status&quot;,
+  &quot;service&quot;: &quot;parcel-service&quot;,
+  &quot;status&quot;: &quot;available&quot;,
+  &quot;retention_start&quot;: null,
+  &quot;collection_start&quot;: null,
+  &quot;collection_end&quot;: null,
+  &quot;available_from&quot;: null
+}</pre></details></div><details class="technical"><summary>Original query and response</summary><pre>{
+  &quot;request&quot;: {
+    &quot;tool&quot;: &quot;list_sources&quot;,
+    &quot;result_id&quot;: &quot;q001&quot;,
+    &quot;arguments&quot;: {
+      &quot;incident_id&quot;: &quot;parcel-amber-review&quot;
+    }
+  },
+  &quot;response&quot;: {
+    &quot;query_id&quot;: &quot;q001&quot;,
+    &quot;status&quot;: &quot;ok_with_records&quot;,
+    &quot;source_id&quot;: null,
+    &quot;as_of&quot;: 50,
+    &quot;latency_ms&quot;: 0.027,
+    &quot;returned_bytes&quot;: 607,
+    &quot;truncated&quot;: false,
+    &quot;query_cost_amount&quot;: 0,
+    &quot;query_cost_basis&quot;: &quot;measured&quot;,
+    &quot;query_cost_note&quot;: &quot;Local SQLite query; no separately billed service. CPU/disk cost not monetized.&quot;,
+    &quot;freshness_observation&quot;: null,
+    &quot;known_retention_boundary&quot;: null,
+    &quot;records&quot;: [
+      {
+        &quot;source_id&quot;: &quot;dispatch-register&quot;,
+        &quot;kind&quot;: &quot;status&quot;,
+        &quot;service&quot;: &quot;parcel-service&quot;,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;retention_start&quot;: null,
+        &quot;collection_start&quot;: null,
+        &quot;collection_end&quot;: null,
+        &quot;available_from&quot;: null
+      }
+    ],
+    &quot;requested_time_window&quot;: null,
+    &quot;known_collection_interval&quot;: null
+  }
+}</pre></details></details><details class="query-card" id="diagnostic-query-1" tabindex="-1" data-query-status="ok_with_records"><summary><span>2. Read the saved work status</span><span class="badge tone-neutral">Records returned</span></summary><p>The source returned the records shown below.</p><p class="muted">Source: dispatch-register · 1 returned items · 1,104 response bytes · 0.16 ms</p><article class="record" id="diagnostic-query-1-record-0" tabindex="-1"><div class="record-meta"><strong>Record parcel-amber-observation</strong><span>status · parcel-service</span></div><p>This record says the work finished.</p><blockquote><span class="muted">Original record message</span><p>The dispatch code is violet-47-copper.</p></blockquote><p class="muted">Work ID: <code>parcel-amber-operation</code></p><details class="technical"><summary>Times, IDs, and original fields</summary><p class="muted">Event time: 24. Available to a query: 26. Clock: parcel-clock. These are saved time values; do not infer precise order across different clocks.</p><pre>{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;record_id&quot;: &quot;parcel-amber-observation&quot;,
+  &quot;source_id&quot;: &quot;dispatch-register&quot;,
+  &quot;source_kind&quot;: &quot;status&quot;,
+  &quot;service_name&quot;: &quot;parcel-service&quot;,
+  &quot;operation_id&quot;: &quot;parcel-amber-operation&quot;,
+  &quot;attempt_id&quot;: &quot;parcel-amber-attempt&quot;,
+  &quot;trace_id&quot;: null,
+  &quot;span_id&quot;: null,
+  &quot;source_event_time&quot;: 24,
+  &quot;collector_observed_time&quot;: 25,
+  &quot;query_available_time&quot;: 26,
+  &quot;clock_domain&quot;: &quot;parcel-clock&quot;,
+  &quot;source_sequence&quot;: 2,
+  &quot;payload_hash&quot;: &quot;74f46bf810360098ad360164f7afe72503f46ac1de89585754dd89767ea5e379&quot;,
+  &quot;parent_payload_hash&quot;: &quot;499a7be65b863da07aee597e567019a40227d00621a4a337ca3cf2c130450973&quot;,
+  &quot;payload&quot;: {
+    &quot;event&quot;: &quot;outcome&quot;,
+    &quot;outcome&quot;: &quot;completed&quot;,
+    &quot;message&quot;: &quot;The dispatch code is violet-47-copper.&quot;
+  }
+}</pre></details></article><details class="technical"><summary>Original query and response</summary><pre>{
+  &quot;request&quot;: {
+    &quot;tool&quot;: &quot;read_operation_status&quot;,
+    &quot;result_id&quot;: &quot;q002&quot;,
+    &quot;arguments&quot;: {
+      &quot;source&quot;: &quot;dispatch-register&quot;,
+      &quot;operation&quot;: &quot;parcel-amber-operation&quot;,
+      &quot;as_of&quot;: 50
+    }
+  },
+  &quot;response&quot;: {
+    &quot;query_id&quot;: &quot;q002&quot;,
+    &quot;status&quot;: &quot;ok_with_records&quot;,
+    &quot;source_id&quot;: &quot;dispatch-register&quot;,
+    &quot;as_of&quot;: 50,
+    &quot;latency_ms&quot;: 0.159,
+    &quot;returned_bytes&quot;: 1104,
+    &quot;truncated&quot;: false,
+    &quot;query_cost_amount&quot;: 0,
+    &quot;query_cost_basis&quot;: &quot;measured&quot;,
+    &quot;query_cost_note&quot;: &quot;Local SQLite query; no separately billed service. CPU/disk cost not monetized.&quot;,
+    &quot;freshness_observation&quot;: null,
+    &quot;known_retention_boundary&quot;: null,
+    &quot;records&quot;: [
+      {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;record_id&quot;: &quot;parcel-amber-observation&quot;,
+        &quot;source_id&quot;: &quot;dispatch-register&quot;,
+        &quot;source_kind&quot;: &quot;status&quot;,
+        &quot;service_name&quot;: &quot;parcel-service&quot;,
+        &quot;operation_id&quot;: &quot;parcel-amber-operation&quot;,
+        &quot;attempt_id&quot;: &quot;parcel-amber-attempt&quot;,
+        &quot;trace_id&quot;: null,
+        &quot;span_id&quot;: null,
+        &quot;source_event_time&quot;: 24,
+        &quot;collector_observed_time&quot;: 25,
+        &quot;query_available_time&quot;: 26,
+        &quot;clock_domain&quot;: &quot;parcel-clock&quot;,
+        &quot;source_sequence&quot;: 2,
+        &quot;payload_hash&quot;: &quot;74f46bf810360098ad360164f7afe72503f46ac1de89585754dd89767ea5e379&quot;,
+        &quot;parent_payload_hash&quot;: &quot;499a7be65b863da07aee597e567019a40227d00621a4a337ca3cf2c130450973&quot;,
+        &quot;payload&quot;: {
+          &quot;event&quot;: &quot;outcome&quot;,
+          &quot;outcome&quot;: &quot;completed&quot;,
+          &quot;message&quot;: &quot;The dispatch code is violet-47-copper.&quot;
+        }
+      }
+    ],
+    &quot;requested_time_window&quot;: [
+      10,
+      50
+    ],
+    &quot;known_collection_interval&quot;: [
+      null,
+      null
+    ]
+  }
+}</pre></details></details>
+<details class="technical"><summary>Limits recorded for this investigation</summary><p>No additional limits were recorded.</p></details>
+</section><section class="section" id="actions"><h2>Original actions and adapter verdicts</h2><p>These structured actions are copied without repairing arguments. An adapter rejection can happen before the claim checker receives a proposal.</p><details><summary>Inspect every action</summary><pre>[
+  {
+    &quot;call_id&quot;: &quot;local_0001&quot;,
+    &quot;model&quot;: &quot;ielab-qwen3-8b-tools-json:v1&quot;,
+    &quot;done&quot;: true,
+    &quot;done_reason&quot;: &quot;stop&quot;,
+    &quot;response_sha256&quot;: &quot;f1137f150e4bcda4972e6492dcade586871d1a5cd908991260751f416edf8afb&quot;,
+    &quot;response_bytes&quot;: 166,
+    &quot;adapter_error&quot;: null,
+    &quot;action&quot;: {
+      &quot;action&quot;: &quot;tool&quot;,
+      &quot;name&quot;: &quot;list_sources&quot;,
+      &quot;arguments&quot;: {
+        &quot;incident_id&quot;: &quot;parcel-amber-review&quot;
+      }
+    }
+  },
+  {
+    &quot;call_id&quot;: &quot;local_0002&quot;,
+    &quot;model&quot;: &quot;ielab-qwen3-8b-tools-json:v1&quot;,
+    &quot;done&quot;: true,
+    &quot;done_reason&quot;: &quot;stop&quot;,
+    &quot;response_sha256&quot;: &quot;92708e49f8eca201f822357c50a0cd13b001af9896e17ba8cf5f716fa6c66dbc&quot;,
+    &quot;response_bytes&quot;: 216,
+    &quot;adapter_error&quot;: null,
+    &quot;action&quot;: {
+      &quot;action&quot;: &quot;tool&quot;,
+      &quot;name&quot;: &quot;read_operation_status&quot;,
+      &quot;arguments&quot;: {
+        &quot;source&quot;: &quot;dispatch-register&quot;,
+        &quot;operation&quot;: &quot;parcel-amber-operation&quot;,
+        &quot;as_of&quot;: 50
+      }
+    }
+  },
+  {
+    &quot;call_id&quot;: &quot;local_0003&quot;,
+    &quot;model&quot;: &quot;ielab-qwen3-8b-tools-json:v1&quot;,
+    &quot;done&quot;: true,
+    &quot;done_reason&quot;: &quot;stop&quot;,
+    &quot;response_sha256&quot;: &quot;9140a3560c2920edbae12147de054762bce5b8c40f11470119e0ba9488485c47&quot;,
+    &quot;response_bytes&quot;: 496,
+    &quot;adapter_error&quot;: null,
+    &quot;action&quot;: {
+      &quot;action&quot;: &quot;final&quot;,
+      &quot;result&quot;: {
+        &quot;status&quot;: &quot;resolved&quot;,
+        &quot;outcome&quot;: &quot;completed&quot;,
+        &quot;location&quot;: &quot;unknown&quot;,
+        &quot;mechanism&quot;: &quot;unknown&quot;,
+        &quot;findings&quot;: [
+          {
+            &quot;claim_type&quot;: &quot;outcome&quot;,
+            &quot;text&quot;: &quot;The parcel operation recorded completion.&quot;,
+            &quot;evidence_ids&quot;: [
+              &quot;q002&quot;,
+              &quot;parcel-amber-observation&quot;
+            ]
+          }
+        ],
+        &quot;candidate_explanations&quot;: [
+          &quot;The operation completed successfully with the dispatch code violet-47-copper.&quot;
+        ],
+        &quot;limits&quot;: [],
+        &quot;next_check&quot;: null
+      }
+    }
+  }
+]</pre></details></section><section class="section" id="evaluation"><h2>Independent evaluator and stricter task check</h2><p>A supported outcome alone does not pass this task. The requested value must appear in a cited finding.</p><pre>{
+  &quot;evaluation&quot;: {
+    &quot;answered&quot;: true,
+    &quot;evidence_valid&quot;: true,
+    &quot;execution_failed&quot;: false,
+    &quot;identifiable&quot;: true,
+    &quot;location_correct&quot;: true,
+    &quot;supported_resolution&quot;: true,
+    &quot;unnecessary_abstention&quot;: false,
+    &quot;unsupported_unique_cause&quot;: false,
+    &quot;wrong_or_unsupported_answer&quot;: false,
+    &quot;rejected_proposals&quot;: 0,
+    &quot;model_abstained&quot;: false,
+    &quot;evaluation_scope&quot;: &quot;fixture_full_diagnostic&quot;,
+    &quot;checked_result_accepted&quot;: true,
+    &quot;scope_note&quot;: &quot;Outcome and location are graded. Unknown location is an abstention requirement, not a positive location witness.&quot;,
+    &quot;wrong_or_unsupported_location&quot;: false,
+    &quot;reference_search_complete&quot;: true,
+    &quot;classification&quot;: [
+      &quot;supported&quot;
+    ],
+    &quot;required_dimensions&quot;: [
+      &quot;outcome&quot;,
+      &quot;location&quot;
+    ],
+    &quot;missing_required_dimensions&quot;: [],
+    &quot;positive_witness_dimensions&quot;: [
+      &quot;outcome&quot;
+    ]
+  },
+  &quot;passed&quot;: false,
+  &quot;returned_value_used&quot;: false
+}</pre></section><footer class="footer"><strong>Built from saved results.</strong> These controls do not run new experiments or change the application. No records leave this page through the report controls. Original data stays available below the summaries.</footer></main><script>
 (() => {
   'use strict';
   const panels = Array.from(document.querySelectorAll('[data-view-panel]'));
