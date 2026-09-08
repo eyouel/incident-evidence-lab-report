@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xhEFu2qNMwkJxuhWAS4iBYKUPmGRexiW1uxxPZ8Obz8='; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>The model answered without reading evidence · Incident Evidence Lab</title><style>
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #20383d;
+  background: #f7f8f4;
+  --ink: #17353b;
+  --muted: #53666c;
+  --line: #dce4df;
+  --paper: #fff;
+  --teal: #087366;
+  --soft-teal: #e8f4ef;
+  --soft-amber: #fff4dc;
+  --amber: #755115;
+  --soft-red: #fff0eb;
+  --red: #983d2b;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: 24px; }
+body { margin: 0; min-width: 0; }
+.skip-link { position: fixed; top: 12px; left: 16px; z-index: 100; padding: 12px 18px; color: #17353b; background: #fff; border: 2px solid #087366; border-radius: 8px; transform: translateY(-180%); font-weight: 700; }
+.skip-link:focus { transform: translateY(0); }
+main { width: min(100% - 64px, 1180px); margin: 0 auto; padding: 36px 0 72px; }
+h1, h2, h3, h4 { color: var(--ink); line-height: 1.22; text-wrap: balance; }
+h1 { max-width: 850px; margin: 16px 0 22px; font-size: clamp(2.2rem, 4.7vw, 3.7rem); font-weight: 720; letter-spacing: -.045em; }
+h2 { margin: 0 0 14px; font-size: clamp(1.5rem, 2.3vw, 2rem); letter-spacing: -.025em; font-weight: 700; }
+h3 { margin: 0 0 10px; font-size: 1.12rem; font-weight: 700; }
+h4 { margin: 0 0 8px; font-size: 1rem; }
+p { margin: 0 0 14px; }
+p:last-child { margin-bottom: 0; }
+ul, ol { padding-left: 1.4em; }
+li + li { margin-top: 7px; }
+a { color: #066f64; text-underline-offset: .2em; text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+a:hover { color: #004e46; text-decoration-thickness: 2px; }
+button, input, select { font: inherit; }
+button, select { cursor: pointer; }
+button { min-height: 44px; padding: 9px 17px; color: var(--ink); background: #fff; border: 1px solid #a9bbb4; border-radius: 9px; font-weight: 650; }
+button:hover { background: #edf5f0; border-color: var(--teal); }
+:focus-visible { outline: 3px solid #1176b6; outline-offset: 4px; }
+[id] { scroll-margin-top: 24px; }
+[id]:target { outline: 3px solid #0e7f70; outline-offset: 5px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86rem; }
+code { overflow-wrap: anywhere; }
+:not(pre) > code { padding: 2px 5px; background: #edf2ee; border-radius: 4px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; max-width: 100%; max-height: 540px; overflow: auto; margin: 14px 0 0; padding: 18px; line-height: 1.6; color: #2c454b; background: #f1f5f1; border: 1px solid var(--line); border-radius: 10px; }
+small { font-size: .88rem; }
+strong { font-weight: 700; }
+.site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 28px; padding: 22px max(32px, calc((100% - 1180px) / 2)); color: #e9f3ef; background: #12363b; border-bottom: 1px solid #35555a; }
+.site-header > div, .site-header > .nav { min-width: 0; margin: 0; }
+.brand { display: flex; flex-direction: column; gap: 2px; color: #fff; font-size: 1.03rem; font-weight: 730; letter-spacing: -.02em; text-decoration: none; }
+.brand > span { color: #c5dcd2; font-size: .84rem; font-weight: 400; letter-spacing: 0; }
+.site-header .brand:hover { color: #fff; }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; font-size: .9rem; }
+.nav a { color: #e2f0e9; text-decoration: none; }
+.nav a:hover { color: #fff; text-decoration: underline; }
+.nav button { color: #edf8f1; background: transparent; border-color: #7b9894; }
+.nav button:hover { background: #23494c; }
+.hero { padding: 12px 0 32px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .8fr); gap: 40px; align-items: center; }
+.hero-proof { padding: 28px; border: 1px solid #cbdcd3; border-radius: 17px; background: #edf5ed; }
+.hero-proof > strong { display: block; margin-bottom: 12px; font-size: 1.18rem; line-height: 1.45; }
+.hero-proof .number { color: #126b5b; }
+.hero-proof h2, .hero-proof h3 { font-size: 1.12rem; }
+.hero-proof p { color: #385a51; }
+.eyebrow { margin: 0 0 8px; color: #46665d; font-size: .79rem; font-weight: 750; letter-spacing: .105em; text-transform: uppercase; }
+.lead { max-width: 780px; font-size: 1.15rem; line-height: 1.7; color: #3b565b; }
+.badge { display: inline-block; max-width: 100%; padding: 5px 11px; border: 1px solid #ccd9d3; border-radius: 6px; color: #35534b; background: #edf2ee; font-size: .85rem; line-height: 1.5; font-weight: 700; overflow-wrap: anywhere; }
+.tone-good { color: #115e4c; background: var(--soft-teal); border-color: #b6d9c7; }
+.tone-warn { color: var(--amber); background: var(--soft-amber); border-color: #e4cd95; }
+.tone-bad { color: var(--red); background: var(--soft-red); border-color: #e8c4b8; }
+.tone-neutral { color: #465c65; background: #edf1f3; border-color: #cdd8df; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.stat-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
+.stat-card > span:first-child, .stat-card > p:first-child { display: block; color: var(--muted); font-size: .92rem; }
+.number { display: block; margin: 7px 0; color: var(--ink); font-size: 2.25rem; line-height: 1.2; letter-spacing: -.035em; font-weight: 720; font-variant-numeric: tabular-nums; }
+.stat-card small { display: block; color: var(--muted); }
+.section { margin-top: 54px; }
+.section-heading { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 23px; }
+.section-heading h2 { margin-bottom: 8px; }
+.section-heading p { max-width: 820px; color: var(--muted); }
+.step-number { flex: 0 0 33px; display: inline-flex; align-items: center; justify-content: center; width: 33px; height: 33px; margin-top: 3px; color: #fff; background: #1b6257; border-radius: 50%; font-size: .88rem; font-weight: 700; }
+.panel { min-width: 0; padding: 26px; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
+.panel > h3:not(:first-child) { margin-top: 24px; }
+.callout { margin: 20px 0; padding: 20px 24px; color: #285347; border: 1px solid #c9ded2; border-left: 4px solid #36886e; border-radius: 0 11px 11px 0; background: #edf6ee; }
+.callout.tone-warn { color: var(--amber); background: var(--soft-amber); border-color: #e4cd95; border-left-color: #ae791f; }
+.callout.tone-bad { color: var(--red); background: var(--soft-red); border-color: #e8c4b8; border-left-color: #b3543e; }
+.muted { color: var(--muted); }
+.two, .three { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.comparison { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 18px; margin: 16px 0; }
+.comparison > div { min-width: 0; padding: 15px 18px; border: 1px solid #e0e7e1; border-radius: 9px; background: #f7f9f5; }
+.comparison > div > span:first-child { display: block; margin-bottom: 7px; color: var(--muted); font-size: .9rem; }
+.comparison > span { color: #608174; font-size: 1.5rem; text-align: center; }
+.case-card > a { display: inline-block; margin: 0 25px 12px; }
+.case-card:not([data-case-row]) { padding: 26px; }
+.case-card:not([data-case-row]) > p, .case-card:not([data-case-row]) > .result-grid, .case-card:not([data-case-row]) > .finding { margin-left: 0; margin-right: 0; }
+.outcome { display: inline-block; font-size: 1rem; font-weight: 700; }
+.case-card { min-width: 0; margin: 18px 0; border: 1px solid #d4dfd7; border-radius: 13px; background: var(--paper); overflow-wrap: anywhere; }
+.case-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px 20px; padding: 22px 25px 15px; }
+.case-head .eyebrow { display: block; }
+.case-head h3 { margin-bottom: 5px; font-size: 1.2rem; }
+.case-meta { color: var(--muted); font-size: .9rem; }
+.case-details { margin: 18px 25px 22px; padding: 0; }
+.case-card > .comparison, .case-card > .result-grid, .case-card > .finding, .case-card > p { margin-left: 25px; margin-right: 25px; }
+.result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; margin-bottom: 16px; }
+.metric { min-width: 0; padding: 16px; border: 1px solid #e0e7e1; border-radius: 9px; background: #f7f9f5; }
+.metric:has(> span) { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 12px; }
+.metric > span { display: inline-block; color: #425e52; font-size: .89rem; }
+.metric strong { display: block; margin-bottom: 5px; }
+.metric .muted, .metric small { display: block; font-size: .87rem; }
+.evidence-link { display: inline-block; margin: 4px 8px 4px 0; padding: 4px 9px; background: #edf6f0; border: 1px solid #c4dcd0; border-radius: 5px; font-size: .9rem; }
+.finding { margin: 16px 0; padding: 16px 18px; border-left: 3px solid #a0bbac; background: #f4f7f2; border-radius: 0 8px 8px 0; }
+.finding p { margin-bottom: 8px; }
+.finding p:last-child { margin-bottom: 0; }
+details { min-width: 0; margin: 14px 0; padding: 0; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+summary { padding: 15px 17px; color: #264b48; cursor: pointer; font-weight: 650; line-height: 1.55; overflow-wrap: anywhere; }
+summary::marker { color: #608479; }
+details[open] > summary { border-bottom: 1px solid var(--line); background: #f5f8f3; }
+details > :not(summary) { margin-left: 17px; margin-right: 17px; }
+details > :last-child:not(summary) { margin-bottom: 17px; }
+details > :nth-child(2) { margin-top: 17px; }
+.query-card { margin: 17px 0; padding: 0; border: 1px solid #d6e1d9; border-radius: 10px; background: #fafbf8; }
+.query-card > summary > .badge { margin-left: 12px; }
+.query-card h4 { margin-bottom: 12px; }
+.record { margin: 13px 0; padding: 18px; border: 1px solid #d7e0dc; border-radius: 8px; background: #fff; }
+.record-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 14px; margin-bottom: 11px; color: var(--muted); font-size: .87rem; overflow-wrap: anywhere; }
+.record dl { margin: 10px 0 0; }
+.record dt { margin-top: 10px; color: var(--muted); font-size: .85rem; }
+.record dd { margin: 0; overflow-wrap: anywhere; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 11px 0; }
+.chip { display: inline-block; padding: 3px 9px; color: #465b50; border: 1px solid #d4e0d6; background: #f4f7f0; border-radius: 5px; font-size: .84rem; overflow-wrap: anywhere; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin: 20px 0 14px; padding: 20px; border: 1px solid #ccdcd1; border-radius: 12px; background: #eef4ed; }
+.field { display: flex; flex: 1 1 200px; min-width: 0; flex-direction: column; gap: 6px; }
+.field label, label.field { color: #294c41; font-size: .92rem; font-weight: 650; }
+.field input, .field select, .toolbar input, .toolbar select { width: 100%; min-width: 0; min-height: 46px; padding: 10px 12px; border: 1px solid #a6b9ad; border-radius: 7px; color: var(--ink); background: #fff; font-weight: 400; }
+.field select, .toolbar select { padding-right: 30px; }
+input::placeholder { color: #65766d; opacity: 1; }
+[data-case-count], #view-status { color: var(--muted); font-size: .9rem; }
+.table-wrap { max-width: 100%; margin: 18px 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: .94rem; }
+th, td { padding: 17px 19px; vertical-align: top; border-bottom: 1px solid #e0e7e1; overflow-wrap: anywhere; }
+th { color: #365347; background: #edf3eb; font-size: .87rem; font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+td small { display: block; margin-top: 6px; color: var(--muted); }
+.restoration-table td:first-child { min-width: 190px; }
+.restoration-table td { font-variant-numeric: tabular-nums; }
+.glossary { margin-top: 20px; }
+.glossary dl { margin-top: 16px; }
+.glossary dt { margin: 16px 0 3px; font-weight: 700; }
+.glossary dt:first-child { margin-top: 0; }
+.glossary dd { margin: 0; padding-bottom: 13px; border-bottom: 1px solid var(--line); color: var(--muted); }
+.glossary dd:last-child { padding-bottom: 0; border-bottom: 0; }
+caption { padding: 13px 19px; color: #3f5b4e; background: #f7faf4; font-size: .9rem; font-weight: 650; text-align: left; }
+blockquote { margin: 15px 0; padding: 14px 17px; color: #41574c; border-left: 3px solid #afc7b7; background: #f5f8f2; }
+blockquote > span { display: block; margin-bottom: 5px; font-size: .86rem; }
+[data-view-panel] > .section-heading { flex-wrap: wrap; justify-content: space-between; align-items: center; margin: 22px 0 12px; }
+[data-case-count] { flex-shrink: 0; }
+.technical { color: #465a5e; font-size: .9rem; }
+.empty-state { margin: 20px 0; padding: 28px; border: 1px dashed #afc2b4; border-radius: 12px; color: var(--muted); text-align: center; background: #f4f7f0; }
+.limit-list { padding-left: 1.35em; }
+.limit-list li { padding-left: 4px; }
+.footer { margin-top: 50px; padding: 24px 0 0; border-top: 1px solid #d2ddd4; color: var(--muted); font-size: .9rem; }
+.screen-reader-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: minmax(0, 1.4fr) minmax(240px, 1fr); gap: 24px; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .three { grid-template-columns: 1fr; }
+  .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  main { width: calc(100% - 32px); padding-top: 25px; }
+  .site-header { padding: 20px 16px; }
+  .hero-grid, .two, .comparison, .result-grid { grid-template-columns: 1fr; }
+  .comparison { gap: 9px; }
+  .comparison > span { transform: rotate(90deg); line-height: 1; }
+  .hero { padding-top: 4px; }
+  .hero-proof { padding: 23px; }
+  .section { margin-top: 40px; }
+  .panel { padding: 21px; }
+  .case-head { padding: 20px 19px 12px; }
+  .case-details { margin: 17px 19px 19px; padding: 0; }
+  .case-card > a { margin-left: 19px; margin-right: 19px; }
+  .case-card:not([data-case-row]) { padding: 20px; }
+  .case-card > .comparison, .case-card > .result-grid, .case-card > .finding, .case-card > p { margin-left: 19px; margin-right: 19px; }
+  th, td { padding: 13px 12px; }
+  .table-wrap { border-radius: 8px; }
+  .restoration-table { min-width: 630px; }
+  .toolbar { padding: 17px; }
+}
+@media (max-width: 420px) {
+  .stat-grid, .result-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 2.25rem; }
+  .stat-card { padding: 20px; }
+  .section-heading { gap: 11px; }
+  .case-meta { font-size: .85rem; }
+  .record { padding: 13px; }
+  .nav { gap: 10px 16px; }
+}
+@media print {
+  :root { font-size: 11pt; color: #152f31; background: #fff; }
+  body { background: #fff; }
+  main { width: 100%; max-width: none; padding: 0; }
+  .site-header { margin-bottom: 20px; color: #17353b; background: #fff; border-bottom: 1px solid #aab9af; }
+  .site-header > div, .site-header > .nav { width: 100%; }
+  .brand, .brand > span { color: #17353b; }
+  .site-header { padding: 0 0 15px; }
+  .skip-link, .nav a, .nav button, [data-enhancement], [data-print], .screen-reader-only,
+  .case-details, .technical, .query-card, pre { display: none !important; }
+  h1 { font-size: 28pt; }
+  h2 { font-size: 20pt; break-after: avoid; }
+  h3, h4, summary { break-after: avoid; }
+  .hero-grid, .two, .three, .comparison, .glossary { display: block; }
+  .hero-proof, .panel, .comparison > *, .two > *, .three > * { margin-bottom: 16px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .section { margin-top: 28px; }
+  .panel, .case-card, .record, .query-card, details, .hero-proof, .stat-card { box-shadow: none; border-color: #bbc8be; }
+  .record, .stat-card, .finding, .metric { break-inside: avoid; }
+  .table-wrap, pre { overflow: visible; max-height: none; }
+  table, .restoration-table { min-width: 0; font-size: 10pt; }
+  th, td { padding: 9px; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  a { color: #174c43; }
+  [id]:target { outline: 0; }
+  .footer { margin-top: 26px; }
+  @page { margin: 17mm; }
+}
+</style></head>
+<body><a class="skip-link" href="#main">Skip to the report</a><header class="site-header"><div class="brand">Incident Evidence Lab<span>Make the evidence easier to understand.</span></div><nav class="nav" aria-label="Report sections"><a href="../index.html">Report home</a><a href="#grammar">Failure and change</a><a href="#interface">Interface checks</a><a href="#regression">Regressions</a><a href="#audit">Original failures</a><button type="button" data-print data-enhancement hidden>Print summary</button></nav></header>
+<main id="main"><section class="hero"><p class="eyebrow">One focused local-model follow-up</p><h1>The model answered without reading evidence</h1><p class="lead">0 of four interface checks passed. 0 of 16 development regressions ran.</p><p>Publication <code>local-grammar-2026-09-07-v3</code>. The first experiment and all of its failures remain unchanged.</p></section><section class="section" id="grammar"><h2>Grammar compatibility: what the runtime actually accepted</h2><p>The exact failed schema and a single string with maxLength 2000 both returned HTTP 400. The pinned grammar parser rejects repetition products at least 2000. The 1999 control and an array of up to 32 such strings compiled. The failed schema had no references. Its alternatives and array limits remain in the compiling projections.</p><p>Only decoder maxLength values at least 2000 were removed. The unchanged full contract and common explanations stay in the prompt. Host validate_action checks every original bound before a read or final proposal is accepted; broker and checker retain separate evidence checks. The pinned parser silently treats larger maxima as unbounded, so a 3000 bound compiling is not proof of decoder enforcement.</p><p>Remaining uncertainty: Sampler startup and four structurally valid proposals were observed. Every investigation immediately answered unknown without reading evidence; all four declared interface checks failed. No supported diagnosis or evidence-use improvement was demonstrated. Unknown matched the expected outcome in two uncertainty cases, but neither performed its required evidence reads. Sixteen development regressions remain unattempted. Other untested schema shapes and general model ability remain unverified.</p><p>These unrelated synthetic probes are separate from investigation scores. A one-token request can test sampler startup. It cannot establish a valid answer, valid evidence use or a supported diagnosis. Missing usage remains unknown.</p><div class="table-wrap"><table><thead><tr><th>Order</th><th>Probe</th><th>Grammar result</th><th>Request result</th><th>Elapsed ms</th><th>Schema identity</th></tr></thead><tbody><tr><th scope="row">1</th><td>string-2000</td><td>Rejected by sampler</td><td>failed http_400</td><td>2629.272874997696</td><td><code>60f70effff39bbc33445a1c0ccb3fbf175340444f21eda7d3d810cb684ad0bb4</code></td></tr><tr><th scope="row">2</th><td>string-1999</td><td>Accepted by sampler</td><td>returned </td><td>326.7276670085266</td><td><code>16f04a4261777ddc7386ae8fb895334f63ee46bb2f362693919de73e773b1a16</code></td></tr><tr><th scope="row">3</th><td>string-3000</td><td>Accepted by sampler</td><td>returned </td><td>162.35495801083744</td><td><code>45c552e3187b39488d2fafe8ae51dc4223c39910e2b55a3d9768437ebc86485c</code></td></tr><tr><th scope="row">4</th><td>array-string-1999</td><td>Accepted by sampler</td><td>returned </td><td>96.87404200667515</td><td><code>80df75a96d503d3011da9e24b031ca4f43ae37235973dd785ee10e941a20301c</code></td></tr><tr><th scope="row">5</th><td>original-initial</td><td>Rejected by sampler</td><td>failed http_400</td><td>37.625875003868714</td><td><code>bff4c3bc8c4be36a013c11f5db87ff9548c7734f5572796af57c92212b8c9827</code></td></tr><tr><th scope="row">6</th><td>string-unbounded</td><td>Accepted by sampler</td><td>returned </td><td>148.88945801067166</td><td><code>00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96</code></td></tr><tr><th scope="row">7</th><td>initial-projected</td><td>Accepted by sampler</td><td>returned </td><td>99.59137500845827</td><td><code>f68f2a6e0c9e7884bb8c22c9bcafb8126f1ff4332d91a10f247217621ada647c</code></td></tr><tr><th scope="row">8</th><td>inventory-projected</td><td>Accepted by sampler</td><td>returned </td><td>101.8194580101408</td><td><code>b096e18d6e171f3e7bea75b6e525a992df4af9c73c32023cfb51f9b8fb87c7f1</code></td></tr><tr><th scope="row">9</th><td>references-128-projected</td><td>Accepted by sampler</td><td>returned </td><td>99.79287500027567</td><td><code>ab0017e086e715cfd5434405231a3926a99791d17a2199e4961098a5eee5e432</code></td></tr></tbody></table></div><details><summary>Small reproducer · HTTP 400: sampler rejected</summary><pre>{
+  &quot;maxLength&quot;: 2000,
+  &quot;type&quot;: &quot;string&quot;
+}</pre><p>Original schema identity: <code>60f70effff39bbc33445a1c0ccb3fbf175340444f21eda7d3d810cb684ad0bb4</code>.</p></details><details><summary>Supported decoder projection · HTTP 200: one token reported</summary><pre>{
+  &quot;type&quot;: &quot;string&quot;
+}</pre><p>Original schema identity: <code>00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96</code>.</p></details><h3>Constraints still enforced by the trusted host</h3><div class="table-wrap"><table><thead><tr><th>Constraint path</th><th>Decoder change</th><th>Host enforcement</th></tr></thead><tbody><tr><td><code>/anyOf/1/properties/result/anyOf/0/properties/candidate_explanations/items/maxLength</code></td><td>Remove maxLength=2000; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/0/properties/candidate_explanations/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr><tr><td><code>/anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/evidence_ids/items/maxLength</code></td><td>Remove maxLength=4096; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=4096 at /anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/evidence_ids/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr><tr><td><code>/anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/text/maxLength</code></td><td>Remove maxLength=3000; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=3000 at /anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/text/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr><tr><td><code>/anyOf/1/properties/result/anyOf/0/properties/limits/items/maxLength</code></td><td>Remove maxLength=2000; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/0/properties/limits/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr><tr><td><code>/anyOf/1/properties/result/anyOf/1/properties/candidate_explanations/items/maxLength</code></td><td>Remove maxLength=2000; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/1/properties/candidate_explanations/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr><tr><td><code>/anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/evidence_ids/items/maxLength</code></td><td>Remove maxLength=4096; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=4096 at /anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/evidence_ids/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr><tr><td><code>/anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/text/maxLength</code></td><td>Remove maxLength=3000; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=3000 at /anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/text/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr><tr><td><code>/anyOf/1/properties/result/anyOf/1/properties/limits/items/maxLength</code></td><td>Remove maxLength=2000; retain the string type and all other constraints.</td><td>validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/1/properties/limits/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.</td></tr></tbody></table></div><h3>Keep each kind of success separate</h3><div class="table-wrap"><table><thead><tr><th>Saved observation</th><th>Four interface checks</th><th>16 development regressions</th></tr></thead><tbody><tr><th scope="row">Structured actions accepted by the adapter</th><td>4</td><td>0</td></tr><tr><th scope="row">Final proposals accepted by the checker</th><td>4</td><td>0</td></tr><tr><th scope="row">Trials with evidence_valid=true in the evaluator</th><td>4</td><td>0</td></tr><tr><th scope="row">Supported known-outcome resolutions</th><td>0</td><td>0</td></tr><tr><th scope="row">Checker-accepted unresolved answers</th><td>4</td><td>0</td></tr><tr><th scope="row">Evidence queries recorded</th><td>0</td><td>0</td></tr><tr><th scope="row">Required-observation checks passed</th><td>0</td><td>Not declared for this stage</td></tr><tr><th scope="row">Uncertainty cases passing all declared checks</th><td>0</td><td>Not declared for this stage</td></tr></tbody></table></div><p>Actions and trials use different denominators. A checker-accepted unresolved answer is not a supported known-outcome resolution. Here, evidence_valid=true means the evaluator found no invalid cited evidence; it does not prove that the model read evidence. An empty finding list can pass that check.</p><p><strong>Every attempted interface investigation answered without an evidence query.</strong> The adapter and checker accepted the answer structures, but this did not satisfy the required investigation. 2 unresolved proposals matched an expected unknown outcome. Matching that outcome still does not satisfy the declared inventory and observation checks. No original proposal or score has been changed.</p><h3>One shared runtime request and time budget</h3><p>28 runtime HTTP attempts: 9 compatibility probes, 4 investigation requests and 15 metadata requests. The shared limit is 172 attempts.</p><p>Metadata requests consume the same request budget. They are not model generations. The one shared clock begins before the first startup metadata request and includes probing, offline preparation and investigation. Its limit is 3,600 seconds.</p><p>This durable guard counts application-side attempts to the local runtime. It does not establish the runtime’s internal HTTP-request count. Provider local_usage below is a separate, narrower observation. Missing usage or unfinished work remains unknown.</p><details><summary>Combined runtime accounting, including metadata and unfinished attempts</summary><pre>{
+  &quot;budget_id&quot;: &quot;b9969325c8a144dbb4e215e0346c8168&quot;,
+  &quot;requests&quot;: 28,
+  &quot;elapsed_ms&quot;: 455441.7175420094,
+  &quot;max_seconds&quot;: 3600,
+  &quot;max_requests&quot;: 172,
+  &quot;counts&quot;: {
+    &quot;probe&quot;: 9,
+    &quot;investigation&quot;: 4,
+    &quot;metadata&quot;: 15
+  },
+  &quot;unfinished&quot;: []
+}</pre></details><details><summary>Sanitized probe usage, constraint enforcement and exact source/input/protocol identities</summary><pre>{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;protocol_sha256&quot;: &quot;e7e9f5de69845e9bf127933411156150dfb188caf60b758f62ec443bb5ce41b7&quot;,
+  &quot;prior_protocol_sha256&quot;: &quot;aec0192099d777e024ecd083c0ca11a7a666105648e05cdeb32e188593fc6598&quot;,
+  &quot;source_snapshot_sha256&quot;: &quot;b3e0cc40c31d9f80357ac762ab9d093db8ffe95afe253a0b4ce835df8a7a94fc&quot;,
+  &quot;input_identity_sha256&quot;: &quot;1328acdbdf4f1df4d2df7e7d969d72a4dbe08247920eb53307ff99f4ce2f8abb&quot;,
+  &quot;full_contract_sha256&quot;: &quot;bff4c3bc8c4be36a013c11f5db87ff9548c7734f5572796af57c92212b8c9827&quot;,
+  &quot;generation_schema_sha256&quot;: &quot;f68f2a6e0c9e7884bb8c22c9bcafb8126f1ff4332d91a10f247217621ada647c&quot;,
+  &quot;cause&quot;: &quot;The exact failed schema and a single string with maxLength 2000 both returned HTTP 400. The pinned grammar parser rejects repetition products at least 2000. The 1999 control and an array of up to 32 such strings compiled. The failed schema had no references. Its alternatives and array limits remain in the compiling projections.&quot;,
+  &quot;correction&quot;: &quot;Only decoder maxLength values at least 2000 were removed. The unchanged full contract and common explanations stay in the prompt. Host validate_action checks every original bound before a read or final proposal is accepted; broker and checker retain separate evidence checks. The pinned parser silently treats larger maxima as unbounded, so a 3000 bound compiling is not proof of decoder enforcement.&quot;,
+  &quot;remaining_uncertainty&quot;: &quot;Sampler startup and four structurally valid proposals were observed. Every investigation immediately answered unknown without reading evidence; all four declared interface checks failed. No supported diagnosis or evidence-use improvement was demonstrated. Unknown matched the expected outcome in two uncertainty cases, but neither performed its required evidence reads. Sixteen development regressions remain unattempted. Other untested schema shapes and general model ability remain unverified.&quot;,
+  &quot;probes&quot;: [
+    {
+      &quot;position&quot;: 1,
+      &quot;label&quot;: &quot;string-2000&quot;,
+      &quot;schema_sha256&quot;: &quot;60f70effff39bbc33445a1c0ccb3fbf175340444f21eda7d3d810cb684ad0bb4&quot;,
+      &quot;request_sha256&quot;: &quot;84a4430bd3d704562116e16dadf377094f78e188767db8702e2c724c0b23fd20&quot;,
+      &quot;status&quot;: &quot;failed&quot;,
+      &quot;error_code&quot;: &quot;http_400&quot;,
+      &quot;http_status&quot;: 400,
+      &quot;grammar_accepted&quot;: false,
+      &quot;elapsed_ms&quot;: 2629.272874997696,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: null
+    },
+    {
+      &quot;position&quot;: 2,
+      &quot;label&quot;: &quot;string-1999&quot;,
+      &quot;schema_sha256&quot;: &quot;16f04a4261777ddc7386ae8fb895334f63ee46bb2f362693919de73e773b1a16&quot;,
+      &quot;request_sha256&quot;: &quot;55557e799f45c505cfa2b1de8cd582f6600f6f67de21fea1993e55ffe2122b02&quot;,
+      &quot;status&quot;: &quot;returned&quot;,
+      &quot;http_status&quot;: 200,
+      &quot;grammar_accepted&quot;: true,
+      &quot;elapsed_ms&quot;: 326.7276670085266,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: {
+        &quot;prompt_eval_count&quot;: 40,
+        &quot;eval_count&quot;: 1,
+        &quot;total_duration&quot;: 285914958,
+        &quot;load_duration&quot;: 801291,
+        &quot;prompt_eval_duration&quot;: 282890000,
+        &quot;eval_duration&quot;: 1000
+      }
+    },
+    {
+      &quot;position&quot;: 3,
+      &quot;label&quot;: &quot;string-3000&quot;,
+      &quot;schema_sha256&quot;: &quot;45c552e3187b39488d2fafe8ae51dc4223c39910e2b55a3d9768437ebc86485c&quot;,
+      &quot;request_sha256&quot;: &quot;8bd7fa83d6992bac6a01dc4787601f12a488a27817f7a06c97113a3cb6c856a5&quot;,
+      &quot;status&quot;: &quot;returned&quot;,
+      &quot;http_status&quot;: 200,
+      &quot;grammar_accepted&quot;: true,
+      &quot;elapsed_ms&quot;: 162.35495801083744,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: {
+        &quot;prompt_eval_count&quot;: 40,
+        &quot;eval_count&quot;: 1,
+        &quot;total_duration&quot;: 118141417,
+        &quot;load_duration&quot;: 631709,
+        &quot;prompt_eval_duration&quot;: 116240000,
+        &quot;eval_duration&quot;: 1000
+      }
+    },
+    {
+      &quot;position&quot;: 4,
+      &quot;label&quot;: &quot;array-string-1999&quot;,
+      &quot;schema_sha256&quot;: &quot;80df75a96d503d3011da9e24b031ca4f43ae37235973dd785ee10e941a20301c&quot;,
+      &quot;request_sha256&quot;: &quot;ce0a61daef37cd755987710d7622dfdaa50fdb9d73c9f63c502e236472dca6d3&quot;,
+      &quot;status&quot;: &quot;returned&quot;,
+      &quot;http_status&quot;: 200,
+      &quot;grammar_accepted&quot;: true,
+      &quot;elapsed_ms&quot;: 96.87404200667515,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: {
+        &quot;prompt_eval_count&quot;: 40,
+        &quot;eval_count&quot;: 1,
+        &quot;total_duration&quot;: 60866084,
+        &quot;load_duration&quot;: 504500,
+        &quot;prompt_eval_duration&quot;: 59323000,
+        &quot;eval_duration&quot;: 1000
+      }
+    },
+    {
+      &quot;position&quot;: 5,
+      &quot;label&quot;: &quot;original-initial&quot;,
+      &quot;schema_sha256&quot;: &quot;bff4c3bc8c4be36a013c11f5db87ff9548c7734f5572796af57c92212b8c9827&quot;,
+      &quot;request_sha256&quot;: &quot;a84fa64744f7da62dc57f9f2dff674b8eacce718c30aaff87d88faba988efc0b&quot;,
+      &quot;status&quot;: &quot;failed&quot;,
+      &quot;error_code&quot;: &quot;http_400&quot;,
+      &quot;http_status&quot;: 400,
+      &quot;grammar_accepted&quot;: false,
+      &quot;elapsed_ms&quot;: 37.625875003868714,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: null
+    },
+    {
+      &quot;position&quot;: 6,
+      &quot;label&quot;: &quot;string-unbounded&quot;,
+      &quot;schema_sha256&quot;: &quot;00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96&quot;,
+      &quot;request_sha256&quot;: &quot;ddb041d67ee8139f59876c940e5bfc2d512cc2604347dd618bcc4142e5276466&quot;,
+      &quot;status&quot;: &quot;returned&quot;,
+      &quot;http_status&quot;: 200,
+      &quot;grammar_accepted&quot;: true,
+      &quot;elapsed_ms&quot;: 148.88945801067166,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: {
+        &quot;prompt_eval_count&quot;: 40,
+        &quot;eval_count&quot;: 1,
+        &quot;total_duration&quot;: 108002416,
+        &quot;load_duration&quot;: 915041,
+        &quot;prompt_eval_duration&quot;: 105847000,
+        &quot;eval_duration&quot;: 1000
+      }
+    },
+    {
+      &quot;position&quot;: 7,
+      &quot;label&quot;: &quot;initial-projected&quot;,
+      &quot;schema_sha256&quot;: &quot;f68f2a6e0c9e7884bb8c22c9bcafb8126f1ff4332d91a10f247217621ada647c&quot;,
+      &quot;request_sha256&quot;: &quot;8141c316d49dca1818ddac9abf1e1c911c410732f0d4d9f314fa1cefefbf18b4&quot;,
+      &quot;status&quot;: &quot;returned&quot;,
+      &quot;http_status&quot;: 200,
+      &quot;grammar_accepted&quot;: true,
+      &quot;elapsed_ms&quot;: 99.59137500845827,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: {
+        &quot;prompt_eval_count&quot;: 40,
+        &quot;eval_count&quot;: 1,
+        &quot;total_duration&quot;: 61119458,
+        &quot;load_duration&quot;: 561167,
+        &quot;prompt_eval_duration&quot;: 59288000,
+        &quot;eval_duration&quot;: 1000
+      }
+    },
+    {
+      &quot;position&quot;: 8,
+      &quot;label&quot;: &quot;inventory-projected&quot;,
+      &quot;schema_sha256&quot;: &quot;b096e18d6e171f3e7bea75b6e525a992df4af9c73c32023cfb51f9b8fb87c7f1&quot;,
+      &quot;request_sha256&quot;: &quot;b383e46b168a06495d482b005e9060b9e659690bc51fa75dac2064c62058911e&quot;,
+      &quot;status&quot;: &quot;returned&quot;,
+      &quot;http_status&quot;: 200,
+      &quot;grammar_accepted&quot;: true,
+      &quot;elapsed_ms&quot;: 101.8194580101408,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: {
+        &quot;prompt_eval_count&quot;: 40,
+        &quot;eval_count&quot;: 1,
+        &quot;total_duration&quot;: 64651042,
+        &quot;load_duration&quot;: 608500,
+        &quot;prompt_eval_duration&quot;: 56143000,
+        &quot;eval_duration&quot;: 1000
+      }
+    },
+    {
+      &quot;position&quot;: 9,
+      &quot;label&quot;: &quot;references-128-projected&quot;,
+      &quot;schema_sha256&quot;: &quot;ab0017e086e715cfd5434405231a3926a99791d17a2199e4961098a5eee5e432&quot;,
+      &quot;request_sha256&quot;: &quot;ae2d39fea3a88b80661a73878bf205cf8e75af1fb87b6cd771a89e3f5b1169c0&quot;,
+      &quot;status&quot;: &quot;returned&quot;,
+      &quot;http_status&quot;: 200,
+      &quot;grammar_accepted&quot;: true,
+      &quot;elapsed_ms&quot;: 99.79287500027567,
+      &quot;max_output_tokens&quot;: 1,
+      &quot;usage&quot;: {
+        &quot;prompt_eval_count&quot;: 40,
+        &quot;eval_count&quot;: 1,
+        &quot;total_duration&quot;: 64364834,
+        &quot;load_duration&quot;: 606250,
+        &quot;prompt_eval_duration&quot;: 55079000,
+        &quot;eval_duration&quot;: 1000
+      }
+    }
+  ],
+  &quot;examples&quot;: [
+    {
+      &quot;label&quot;: &quot;Small reproducer&quot;,
+      &quot;outcome&quot;: &quot;HTTP 400: sampler rejected&quot;,
+      &quot;schema_json&quot;: &quot;{\&quot;maxLength\&quot;: 2000, \&quot;type\&quot;: \&quot;string\&quot;}&quot;,
+      &quot;schema_sha256&quot;: &quot;60f70effff39bbc33445a1c0ccb3fbf175340444f21eda7d3d810cb684ad0bb4&quot;
+    },
+    {
+      &quot;label&quot;: &quot;Supported decoder projection&quot;,
+      &quot;outcome&quot;: &quot;HTTP 200: one token reported&quot;,
+      &quot;schema_json&quot;: &quot;{\&quot;type\&quot;: \&quot;string\&quot;}&quot;,
+      &quot;schema_sha256&quot;: &quot;00404e686415370f1711c4d7acfa2905444d3cf23cef2e10c47d445ebe690f96&quot;
+    }
+  ],
+  &quot;removed_constraints&quot;: [
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/0/properties/candidate_explanations/items/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=2000; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/0/properties/candidate_explanations/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    },
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/evidence_ids/items/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=4096; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=4096 at /anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/evidence_ids/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    },
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/text/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=3000; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=3000 at /anyOf/1/properties/result/anyOf/0/properties/findings/items/properties/text/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    },
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/0/properties/limits/items/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=2000; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/0/properties/limits/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    },
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/1/properties/candidate_explanations/items/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=2000; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/1/properties/candidate_explanations/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    },
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/evidence_ids/items/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=4096; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=4096 at /anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/evidence_ids/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    },
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/text/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=3000; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=3000 at /anyOf/1/properties/result/anyOf/1/properties/findings/items/properties/text/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    },
+    {
+      &quot;keyword_path&quot;: &quot;/anyOf/1/properties/result/anyOf/1/properties/limits/items/maxLength&quot;,
+      &quot;decoder_change&quot;: &quot;Remove maxLength=2000; retain the string type and all other constraints.&quot;,
+      &quot;host_enforcement&quot;: &quot;validate_action checks the original maxLength=2000 at /anyOf/1/properties/result/anyOf/1/properties/limits/items/maxLength before a proposed read is returned or a final proposal is accepted by the adapter; the checker separately decides evidence support.&quot;
+    }
+  ]
+}</pre></details></section><section class="section" id="change"><h2>What changed in this successor?</h2><p>The decoder receives a compact projection of the existing application contract. The trusted host keeps the full contract and checks a proposed read before execution and a final proposal before acceptance. Field explanations, policies, evidence permissions, cutoffs and scoring stay unchanged. The host does not select an answer or repair a proposal.</p><p>The four interface checks use normal investigation instructions, not a scripted sequence or a supplied answer. The previous grammar-initialization failure remains available in its <a href="../followup/index.html">unchanged historical report</a>.</p></section><section class="section" id="interface"><h2>Four new interface checks, kept separate</h2><p>4 planned; 4 attempted; 0 passed; 4 failed; 0 unattempted. 4 answers were valid unresolved answers.</p><p>These cases test status evidence, logs when status is unavailable, missing terminal evidence and contradictory terminal observations. They do not count toward the 16 diagnostic regressions.</p><div class="table-wrap"><table><thead><tr><th>Order</th><th>Case</th><th>Check</th><th>Details</th></tr></thead><tbody><tr><th scope="row">1</th><td>interface-1</td><td>Did not pass</td><td><a href="interface-1.html">Model, checker and evaluator</a></td></tr><tr><th scope="row">2</th><td>interface-2</td><td>Did not pass</td><td><a href="interface-2.html">Model, checker and evaluator</a></td></tr><tr><th scope="row">3</th><td>interface-3</td><td>Did not pass</td><td><a href="interface-3.html">Model, checker and evaluator</a></td></tr><tr><th scope="row">4</th><td>interface-4</td><td>Did not pass</td><td><a href="interface-4.html">Model, checker and evaluator</a></td></tr></tbody></table></div></section><section class="section" id="regression"><h2>The 16 previously seen development cases</h2><p>16 planned; 0 attempted; 0 completed with valid output; 0 failed or invalid; 0 interrupted; 16 unattempted.</p><p>The four-case gate did not pass. The regression batch was not allowed to start. Unattempted slots contain no replacement answers.</p><p>The first experiment recorded 0 supported resolutions across its 16 slots. This follow-up recorded 0 supported resolutions across 0 attempted regression slots.</p><p>A valid JSON object or an accepted unresolved answer is not a supported diagnosis. These cases were already seen during development. They cannot establish unseen-case accuracy, statistical superiority or a broad model ranking. Fixture and Java requirements remain separate; the reduced Java view need not have a known outcome.</p><p><a href="regressions.html">Every regression slot, proposal, check and result</a></p><p>Stop reason: <strong>interface_checks_failed</strong>.</p></section><section class="section" id="audit"><h2>All 16 original failures remain visible</h2><p>One trial can have several causes. The audit explains the original result; it does not change any checker verdict or evaluator score.</p><div class="table-wrap"><table><thead><tr><th>Order</th><th>Original trial</th><th>Overlapping categories</th><th>Checker errors</th></tr></thead><tbody><tr><td>1</td><td><a href="../local/da018ae7008b4d0986fce1cdb9fadcdc.html">a1 · plain</a></td><td>Invalid read arguments or source/tool pairing; Checker requirement failed; Outcome field supported; another required field failed; Source does not support the requested tool; Invalid next check</td><td>invalid next check</td></tr><tr><td>2</td><td><a href="../local/eb902961cd884166ab873cea45fc98d1.html">a1 · candidate</a></td><td>Invalid read arguments or source/tool pairing; No observation records returned; Generation limit reached without a final proposal; Requested row limit is outside the allowed range</td><td>No final checker error</td></tr><tr><td>3</td><td><a href="../local/0872ba3db4704ffa809c98f1dc152da9.html">b2 · candidate</a></td><td>Missing or incorrect record references; Checker requirement failed; No observation records returned; Invalid next check</td><td>invalid finding schema; invalid next check</td></tr><tr><td>4</td><td><a href="../local/10d4022b4014443eaf3f22c1d184c673.html">b2 · plain</a></td><td>No observation records returned; Generation limit reached without a final proposal</td><td>No final checker error</td></tr><tr><td>5</td><td><a href="../local/4b84d5f1140f41969e53d6a1dfb6b6ad.html">c3 · plain</a></td><td>No observation records returned; Generation limit reached without a final proposal</td><td>No final checker error</td></tr><tr><td>6</td><td><a href="../local/2308cbcc0b57422cbc3599ea18543e7e.html">c3 · candidate</a></td><td>Missing or incorrect record references; Checker requirement failed; No observation records returned</td><td>invalid finding schema</td></tr><tr><td>7</td><td><a href="../local/d5008cdfa37e4674aa08718df5b174cb.html">d4 · candidate</a></td><td>Invalid read arguments or source/tool pairing; Checker requirement failed; No observation records returned; Source does not support the requested tool; Invalid next check; Requested row limit is outside the allowed range</td><td>invalid next check</td></tr><tr><td>8</td><td><a href="../local/39a6392602ef4d4496f562f4892ec363.html">d4 · plain</a></td><td>Checker requirement failed; Outcome field supported; another required field failed; Source does not support the requested tool; Invalid next check</td><td>invalid next check</td></tr><tr><td>9</td><td><a href="../local/823f124d04854bddae0a0c3bd2aa4468.html">e5 · plain</a></td><td>Checker requirement failed; Outcome field supported; another required field failed; Source does not support the requested tool; Invalid next check; Resolution status does not match the reported outcome</td><td>inconsistent resolved status; invalid next check</td></tr><tr><td>10</td><td><a href="../local/b3c688a4bc0a48d1b881705df7c12712.html">e5 · candidate</a></td><td>Invalid read arguments or source/tool pairing; Checker requirement failed; No observation records returned; Source does not support the requested tool; Invalid next check; Requested row limit is outside the allowed range</td><td>invalid next check</td></tr><tr><td>11</td><td><a href="../local/4fb6911d76dd41c593544ad172a0d825.html">java_capture_1 · plain</a></td><td>Missing or incorrect record references; Checker requirement failed; No evidence queries; No observation records returned; Invalid next check</td><td>invalid finding schema; invalid next check</td></tr><tr><td>12</td><td><a href="../local/06e20ed3c3ca429f85119c524a0dedb7.html">java_capture_1 · candidate</a></td><td>Invalid read arguments or source/tool pairing; Missing or incorrect record references; Checker requirement failed; No observation records returned; Source does not support the requested tool; Invalid next check; Requested row limit is outside the allowed range</td><td>invalid finding schema; invalid next check</td></tr><tr><td>13</td><td><a href="../local/9392e250935044ae9a97490a0c477ec9.html">java_capture_1 · candidate</a></td><td>Invalid read arguments or source/tool pairing; Checker requirement failed; No observation records returned; Source does not support the requested tool; Invalid next check; Requested row limit is outside the allowed range</td><td>invalid next check</td></tr><tr><td>14</td><td><a href="../local/86a4ba6649894dea98a707cc55733218.html">java_capture_1 · plain</a></td><td>Missing or incorrect record references; Checker requirement failed; No evidence queries; No observation records returned; Invalid next check</td><td>invalid finding schema; invalid next check</td></tr><tr><td>15</td><td><a href="../local/57c5cd7c16404d2594cb9fd4765300bb.html">java_capture_1 · plain</a></td><td>Missing or incorrect record references; Checker requirement failed; No evidence queries; No observation records returned; Invalid next check</td><td>invalid finding schema; invalid next check</td></tr><tr><td>16</td><td><a href="../local/58dfff62d44742509d2488930ed3509a.html">java_capture_1 · candidate</a></td><td>Invalid read arguments or source/tool pairing; Missing or incorrect record references; Checker requirement failed; No observation records returned; Source does not support the requested tool; Invalid next check; Requested row limit is outside the allowed range</td><td>invalid finding schema; invalid next check</td></tr></tbody></table></div><p><a href="failure-audit.json">Full saved failure classification and counts</a></p></section><section class="section" id="records"><h2>Saved records and limits</h2><p>Execution identity: <code>e7e9f5de69845e9bf127933411156150dfb188caf60b758f62ec443bb5ce41b7</code>.</p><p><a href="comparison.json">Sanitized comparison data</a> · <a href="protocol.json">Protocol settings and common interface</a> · <a href="../v1-index.html">Unchanged first landing page</a> · <a href="../v1-manifest.json">Historical first-publication manifest</a> · <a href="../manifest.json">Current publication hashes</a></p><p>The historical manifest describes the original publication, including its original root landing page. That landing page is preserved here as v1-index.html. Current publication hashes identify the files served in this update.</p><p>Local runtime usage is reported where observed. Missing counts or operating costs remain unknown. API and subscription-investigator verification remain unexecuted. No report control runs a model or sends evidence elsewhere. Published copies exclude private inputs, expectations, account data and raw reasoning.</p><details><summary>Reported local usage across interface checks and any regressions</summary><pre>{
+  &quot;mode&quot;: &quot;local_model&quot;,
+  &quot;model&quot;: &quot;qwen3:8b&quot;,
+  &quot;calls&quot;: 4,
+  &quot;runs_started&quot;: 4,
+  &quot;runs_closed&quot;: 4,
+  &quot;stop_reason&quot;: null,
+  &quot;model_cost_usd&quot;: null,
+  &quot;cost_basis&quot;: &quot;local_inference_operating_cost_not_measured&quot;,
+  &quot;underlying_http_request_count&quot;: null,
+  &quot;elapsed_ms&quot;: 43255.823,
+  &quot;usage_observations&quot;: [
+    {
+      &quot;prompt_eval_count&quot;: 1956,
+      &quot;eval_count&quot;: 153,
+      &quot;total_duration&quot;: 12909197959,
+      &quot;load_duration&quot;: 619875,
+      &quot;prompt_eval_duration&quot;: 4860699000,
+      &quot;eval_duration&quot;: 8039529000
+    },
+    {
+      &quot;prompt_eval_count&quot;: 1956,
+      &quot;eval_count&quot;: 153,
+      &quot;total_duration&quot;: 9916579042,
+      &quot;load_duration&quot;: 620625,
+      &quot;prompt_eval_duration&quot;: 1742154000,
+      &quot;eval_duration&quot;: 8170371000
+    },
+    {
+      &quot;prompt_eval_count&quot;: 1956,
+      &quot;eval_count&quot;: 153,
+      &quot;total_duration&quot;: 9156389959,
+      &quot;load_duration&quot;: 803375,
+      &quot;prompt_eval_duration&quot;: 1737706000,
+      &quot;eval_duration&quot;: 7413471000
+    },
+    {
+      &quot;prompt_eval_count&quot;: 1956,
+      &quot;eval_count&quot;: 153,
+      &quot;total_duration&quot;: 8214348583,
+      &quot;load_duration&quot;: 590500,
+      &quot;prompt_eval_duration&quot;: 1541281000,
+      &quot;eval_duration&quot;: 6665472000
+    }
+  ]
+}</pre></details></section><section class="section"><h2>Preserved second publication</h2><p><a href="../v2-index.html">Unchanged second landing page</a> · <a href="../v2-manifest.json">Historical second-publication manifest</a>. All previous trial and evidence URLs keep their original content.</p></section><footer class="footer"><strong>Built from saved results.</strong> These controls do not run new experiments or change the application. No records leave this page through the report controls. Sanitized published evidence stays available below the summaries.</footer></main><script>
+(() => {
+  'use strict';
+  const panels = Array.from(document.querySelectorAll('[data-view-panel]'));
+  const viewSelect = document.getElementById('evidence-view');
+  const caseFilter = document.getElementById('case-filter');
+  const caseSearch = document.getElementById('case-search');
+  const viewStatus = document.getElementById('view-status');
+  const panelForId = id => panels.find(panel => panel.id === id);
+  let selectedId = viewSelect && panelForId(viewSelect.value)
+    ? viewSelect.value : (panels[0] ? panels[0].id : null);
+
+  function clearFilters() {
+    if (caseFilter) caseFilter.value = 'all';
+    if (caseSearch) caseSearch.value = '';
+  }
+
+  function updateView(announce = true) {
+    const filter = caseFilter ? caseFilter.value : 'all';
+    const terms = caseSearch ? caseSearch.value.trim().toLowerCase().split(/\s+/).filter(Boolean) : [];
+    panels.forEach(panel => {
+      panel.hidden = panel.id !== selectedId;
+      const rows = Array.from(panel.querySelectorAll('[data-case-row]'));
+      let shown = 0;
+      rows.forEach(row => {
+        const matchesKind = filter === 'all'
+          || (filter === 'changed' && row.dataset.changed === 'true')
+          || (filter === 'unresolved' && row.dataset.unresolved === 'true');
+        const words = (row.dataset.caseSearch || '').toLowerCase();
+        const matchesSearch = terms.every(term => words.includes(term));
+        row.hidden = !(matchesKind && matchesSearch);
+        if (!row.hidden) shown += 1;
+      });
+      const count = `${shown} of ${rows.length} ${rows.length === 1 ? 'case' : 'cases'} shown.`;
+      panel.querySelectorAll('[data-case-count]').forEach(output => { output.textContent = count; });
+      panel.querySelectorAll('[data-empty-state]').forEach(empty => { empty.hidden = shown !== 0; });
+      if (announce && panel.id === selectedId && viewStatus) {
+        const label = panel.dataset.viewLabel || 'Selected evidence';
+        viewStatus.textContent = rows.length ? `${label}. ${count}` : `${label}. Showing this saved test.`;
+      }
+    });
+    if (viewSelect && selectedId) viewSelect.value = selectedId;
+  }
+
+  function selectView(id, reset = false) {
+    if (!panelForId(id)) return false;
+    selectedId = id;
+    if (reset) clearFilters();
+    updateView();
+    return true;
+  }
+
+  function revealTarget(target) {
+    if (!target) return;
+    const owner = target.closest('[data-view-panel]');
+    if (owner) selectView(owner.id, true);
+    let ancestor = target;
+    while (ancestor) {
+      if (ancestor.tagName === 'DETAILS') ancestor.open = true;
+      ancestor = ancestor.parentElement;
+    }
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({preventScroll: true});
+    target.scrollIntoView({block: 'start', behavior: 'auto'});
+  }
+
+  function targetFromHash(hash) {
+    if (!hash || hash === '#') return null;
+    try { return document.getElementById(decodeURIComponent(hash.slice(1))); }
+    catch (_) { return null; }
+  }
+
+  function revealHash() {
+    revealTarget(targetFromHash(window.location.hash));
+  }
+
+  if (viewSelect) viewSelect.addEventListener('change', () => selectView(viewSelect.value));
+  if (caseFilter) caseFilter.addEventListener('change', () => updateView());
+  if (caseSearch) caseSearch.addEventListener('input', () => updateView());
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+    const evidenceLink = event.target.closest('a[data-evidence-link]');
+    const viewLink = event.target.closest('a[data-show-view]');
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (evidenceLink) {
+      const target = targetFromHash(evidenceLink.hash);
+      if (!target) return;
+      event.preventDefault();
+      revealTarget(target);
+      if (window.location.hash !== evidenceLink.hash) window.location.hash = evidenceLink.hash;
+    } else if (viewLink && selectView(viewLink.dataset.showView, true)) {
+      event.preventDefault();
+      const target = panelForId(viewLink.dataset.showView);
+      revealTarget(target);
+      if (viewLink.hash && window.location.hash !== viewLink.hash) window.location.hash = viewLink.hash;
+    }
+    const printButton = event.target.closest('[data-print]');
+    if (printButton) window.print();
+  });
+  window.addEventListener('hashchange', revealHash);
+
+  // Print CSS keeps the current view and filters and omits raw detail.
+
+  updateView(false);
+  document.querySelectorAll('[data-enhancement]').forEach(control => { control.hidden = false; });
+  document.documentElement.classList.add('is-interactive');
+  revealHash();
+})();
+</script></body></html>
