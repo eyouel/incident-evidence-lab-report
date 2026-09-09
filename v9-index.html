@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-xhEFu2qNMwkJxuhWAS4iBYKUPmGRexiW1uxxPZ8Obz8='; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'"><title>Incident Evidence Lab — bounded validator feedback · Incident Evidence Lab</title><style>
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #20383d;
+  background: #f7f8f4;
+  --ink: #17353b;
+  --muted: #53666c;
+  --line: #dce4df;
+  --paper: #fff;
+  --teal: #087366;
+  --soft-teal: #e8f4ef;
+  --soft-amber: #fff4dc;
+  --amber: #755115;
+  --soft-red: #fff0eb;
+  --red: #983d2b;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: 24px; }
+body { margin: 0; min-width: 0; }
+.skip-link { position: fixed; top: 12px; left: 16px; z-index: 100; padding: 12px 18px; color: #17353b; background: #fff; border: 2px solid #087366; border-radius: 8px; transform: translateY(-180%); font-weight: 700; }
+.skip-link:focus { transform: translateY(0); }
+main { width: min(100% - 64px, 1180px); margin: 0 auto; padding: 36px 0 72px; }
+h1, h2, h3, h4 { color: var(--ink); line-height: 1.22; text-wrap: balance; }
+h1 { max-width: 850px; margin: 16px 0 22px; font-size: clamp(2.2rem, 4.7vw, 3.7rem); font-weight: 720; letter-spacing: -.045em; }
+h2 { margin: 0 0 14px; font-size: clamp(1.5rem, 2.3vw, 2rem); letter-spacing: -.025em; font-weight: 700; }
+h3 { margin: 0 0 10px; font-size: 1.12rem; font-weight: 700; }
+h4 { margin: 0 0 8px; font-size: 1rem; }
+p { margin: 0 0 14px; }
+p:last-child { margin-bottom: 0; }
+ul, ol { padding-left: 1.4em; }
+li + li { margin-top: 7px; }
+a { color: #066f64; text-underline-offset: .2em; text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+a:hover { color: #004e46; text-decoration-thickness: 2px; }
+button, input, select { font: inherit; }
+button, select { cursor: pointer; }
+button { min-height: 44px; padding: 9px 17px; color: var(--ink); background: #fff; border: 1px solid #a9bbb4; border-radius: 9px; font-weight: 650; }
+button:hover { background: #edf5f0; border-color: var(--teal); }
+:focus-visible { outline: 3px solid #1176b6; outline-offset: 4px; }
+[id] { scroll-margin-top: 24px; }
+[id]:target { outline: 3px solid #0e7f70; outline-offset: 5px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .86rem; }
+code { overflow-wrap: anywhere; }
+:not(pre) > code { padding: 2px 5px; background: #edf2ee; border-radius: 4px; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; max-width: 100%; max-height: 540px; overflow: auto; margin: 14px 0 0; padding: 18px; line-height: 1.6; color: #2c454b; background: #f1f5f1; border: 1px solid var(--line); border-radius: 10px; }
+small { font-size: .88rem; }
+strong { font-weight: 700; }
+.site-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 28px; padding: 22px max(32px, calc((100% - 1180px) / 2)); color: #e9f3ef; background: #12363b; border-bottom: 1px solid #35555a; }
+.site-header > div, .site-header > .nav { min-width: 0; margin: 0; }
+.brand { display: flex; flex-direction: column; gap: 2px; color: #fff; font-size: 1.03rem; font-weight: 730; letter-spacing: -.02em; text-decoration: none; }
+.brand > span { color: #c5dcd2; font-size: .84rem; font-weight: 400; letter-spacing: 0; }
+.site-header .brand:hover { color: #fff; }
+.nav { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; font-size: .9rem; }
+.nav a { color: #e2f0e9; text-decoration: none; }
+.nav a:hover { color: #fff; text-decoration: underline; }
+.nav button { color: #edf8f1; background: transparent; border-color: #7b9894; }
+.nav button:hover { background: #23494c; }
+.hero { padding: 12px 0 32px; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .8fr); gap: 40px; align-items: center; }
+.hero-proof { padding: 28px; border: 1px solid #cbdcd3; border-radius: 17px; background: #edf5ed; }
+.hero-proof > strong { display: block; margin-bottom: 12px; font-size: 1.18rem; line-height: 1.45; }
+.hero-proof .number { color: #126b5b; }
+.hero-proof h2, .hero-proof h3 { font-size: 1.12rem; }
+.hero-proof p { color: #385a51; }
+.eyebrow { margin: 0 0 8px; color: #46665d; font-size: .79rem; font-weight: 750; letter-spacing: .105em; text-transform: uppercase; }
+.lead { max-width: 780px; font-size: 1.15rem; line-height: 1.7; color: #3b565b; }
+.badge { display: inline-block; max-width: 100%; padding: 5px 11px; border: 1px solid #ccd9d3; border-radius: 6px; color: #35534b; background: #edf2ee; font-size: .85rem; line-height: 1.5; font-weight: 700; overflow-wrap: anywhere; }
+.tone-good { color: #115e4c; background: var(--soft-teal); border-color: #b6d9c7; }
+.tone-warn { color: var(--amber); background: var(--soft-amber); border-color: #e4cd95; }
+.tone-bad { color: var(--red); background: var(--soft-red); border-color: #e8c4b8; }
+.tone-neutral { color: #465c65; background: #edf1f3; border-color: #cdd8df; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.stat-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
+.stat-card > span:first-child, .stat-card > p:first-child { display: block; color: var(--muted); font-size: .92rem; }
+.number { display: block; margin: 7px 0; color: var(--ink); font-size: 2.25rem; line-height: 1.2; letter-spacing: -.035em; font-weight: 720; font-variant-numeric: tabular-nums; }
+.stat-card small { display: block; color: var(--muted); }
+.section { margin-top: 54px; }
+.section-heading { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 23px; }
+.section-heading h2 { margin-bottom: 8px; }
+.section-heading p { max-width: 820px; color: var(--muted); }
+.step-number { flex: 0 0 33px; display: inline-flex; align-items: center; justify-content: center; width: 33px; height: 33px; margin-top: 3px; color: #fff; background: #1b6257; border-radius: 50%; font-size: .88rem; font-weight: 700; }
+.panel { min-width: 0; padding: 26px; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); }
+.panel > h3:not(:first-child) { margin-top: 24px; }
+.callout { margin: 20px 0; padding: 20px 24px; color: #285347; border: 1px solid #c9ded2; border-left: 4px solid #36886e; border-radius: 0 11px 11px 0; background: #edf6ee; }
+.callout.tone-warn { color: var(--amber); background: var(--soft-amber); border-color: #e4cd95; border-left-color: #ae791f; }
+.callout.tone-bad { color: var(--red); background: var(--soft-red); border-color: #e8c4b8; border-left-color: #b3543e; }
+.muted { color: var(--muted); }
+.two, .three { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.comparison { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 18px; margin: 16px 0; }
+.comparison > div { min-width: 0; padding: 15px 18px; border: 1px solid #e0e7e1; border-radius: 9px; background: #f7f9f5; }
+.comparison > div > span:first-child { display: block; margin-bottom: 7px; color: var(--muted); font-size: .9rem; }
+.comparison > span { color: #608174; font-size: 1.5rem; text-align: center; }
+.case-card > a { display: inline-block; margin: 0 25px 12px; }
+.case-card:not([data-case-row]) { padding: 26px; }
+.case-card:not([data-case-row]) > p, .case-card:not([data-case-row]) > .result-grid, .case-card:not([data-case-row]) > .finding { margin-left: 0; margin-right: 0; }
+.outcome { display: inline-block; font-size: 1rem; font-weight: 700; }
+.case-card { min-width: 0; margin: 18px 0; border: 1px solid #d4dfd7; border-radius: 13px; background: var(--paper); overflow-wrap: anywhere; }
+.case-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px 20px; padding: 22px 25px 15px; }
+.case-head .eyebrow { display: block; }
+.case-head h3 { margin-bottom: 5px; font-size: 1.2rem; }
+.case-meta { color: var(--muted); font-size: .9rem; }
+.case-details { margin: 18px 25px 22px; padding: 0; }
+.case-card > .comparison, .case-card > .result-grid, .case-card > .finding, .case-card > p { margin-left: 25px; margin-right: 25px; }
+.result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 16px; margin-bottom: 16px; }
+.metric { min-width: 0; padding: 16px; border: 1px solid #e0e7e1; border-radius: 9px; background: #f7f9f5; }
+.metric:has(> span) { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 12px; }
+.metric > span { display: inline-block; color: #425e52; font-size: .89rem; }
+.metric strong { display: block; margin-bottom: 5px; }
+.metric .muted, .metric small { display: block; font-size: .87rem; }
+.evidence-link { display: inline-block; margin: 4px 8px 4px 0; padding: 4px 9px; background: #edf6f0; border: 1px solid #c4dcd0; border-radius: 5px; font-size: .9rem; }
+.finding { margin: 16px 0; padding: 16px 18px; border-left: 3px solid #a0bbac; background: #f4f7f2; border-radius: 0 8px 8px 0; }
+.finding p { margin-bottom: 8px; }
+.finding p:last-child { margin-bottom: 0; }
+details { min-width: 0; margin: 14px 0; padding: 0; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+summary { padding: 15px 17px; color: #264b48; cursor: pointer; font-weight: 650; line-height: 1.55; overflow-wrap: anywhere; }
+summary::marker { color: #608479; }
+details[open] > summary { border-bottom: 1px solid var(--line); background: #f5f8f3; }
+details > :not(summary) { margin-left: 17px; margin-right: 17px; }
+details > :last-child:not(summary) { margin-bottom: 17px; }
+details > :nth-child(2) { margin-top: 17px; }
+.query-card { margin: 17px 0; padding: 0; border: 1px solid #d6e1d9; border-radius: 10px; background: #fafbf8; }
+.query-card > summary > .badge { margin-left: 12px; }
+.query-card h4 { margin-bottom: 12px; }
+.record { margin: 13px 0; padding: 18px; border: 1px solid #d7e0dc; border-radius: 8px; background: #fff; }
+.record-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 14px; margin-bottom: 11px; color: var(--muted); font-size: .87rem; overflow-wrap: anywhere; }
+.record dl { margin: 10px 0 0; }
+.record dt { margin-top: 10px; color: var(--muted); font-size: .85rem; }
+.record dd { margin: 0; overflow-wrap: anywhere; }
+.chips { display: flex; flex-wrap: wrap; gap: 7px; margin: 11px 0; }
+.chip { display: inline-block; padding: 3px 9px; color: #465b50; border: 1px solid #d4e0d6; background: #f4f7f0; border-radius: 5px; font-size: .84rem; overflow-wrap: anywhere; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; margin: 20px 0 14px; padding: 20px; border: 1px solid #ccdcd1; border-radius: 12px; background: #eef4ed; }
+.field { display: flex; flex: 1 1 200px; min-width: 0; flex-direction: column; gap: 6px; }
+.field label, label.field { color: #294c41; font-size: .92rem; font-weight: 650; }
+.field input, .field select, .toolbar input, .toolbar select { width: 100%; min-width: 0; min-height: 46px; padding: 10px 12px; border: 1px solid #a6b9ad; border-radius: 7px; color: var(--ink); background: #fff; font-weight: 400; }
+.field select, .toolbar select { padding-right: 30px; }
+input::placeholder { color: #65766d; opacity: 1; }
+[data-case-count], #view-status { color: var(--muted); font-size: .9rem; }
+.table-wrap { max-width: 100%; margin: 18px 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 11px; background: #fff; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: .94rem; }
+th, td { padding: 17px 19px; vertical-align: top; border-bottom: 1px solid #e0e7e1; overflow-wrap: anywhere; }
+th { color: #365347; background: #edf3eb; font-size: .87rem; font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+td small { display: block; margin-top: 6px; color: var(--muted); }
+.restoration-table td:first-child { min-width: 190px; }
+.restoration-table td { font-variant-numeric: tabular-nums; }
+.glossary { margin-top: 20px; }
+.glossary dl { margin-top: 16px; }
+.glossary dt { margin: 16px 0 3px; font-weight: 700; }
+.glossary dt:first-child { margin-top: 0; }
+.glossary dd { margin: 0; padding-bottom: 13px; border-bottom: 1px solid var(--line); color: var(--muted); }
+.glossary dd:last-child { padding-bottom: 0; border-bottom: 0; }
+caption { padding: 13px 19px; color: #3f5b4e; background: #f7faf4; font-size: .9rem; font-weight: 650; text-align: left; }
+blockquote { margin: 15px 0; padding: 14px 17px; color: #41574c; border-left: 3px solid #afc7b7; background: #f5f8f2; }
+blockquote > span { display: block; margin-bottom: 5px; font-size: .86rem; }
+[data-view-panel] > .section-heading { flex-wrap: wrap; justify-content: space-between; align-items: center; margin: 22px 0 12px; }
+[data-case-count] { flex-shrink: 0; }
+.technical { color: #465a5e; font-size: .9rem; }
+.empty-state { margin: 20px 0; padding: 28px; border: 1px dashed #afc2b4; border-radius: 12px; color: var(--muted); text-align: center; background: #f4f7f0; }
+.limit-list { padding-left: 1.35em; }
+.limit-list li { padding-left: 4px; }
+.footer { margin-top: 50px; padding: 24px 0 0; border-top: 1px solid #d2ddd4; color: var(--muted); font-size: .9rem; }
+.screen-reader-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: minmax(0, 1.4fr) minmax(240px, 1fr); gap: 24px; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .three { grid-template-columns: 1fr; }
+  .result-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  main { width: calc(100% - 32px); padding-top: 25px; }
+  .site-header { padding: 20px 16px; }
+  .hero-grid, .two, .comparison, .result-grid { grid-template-columns: 1fr; }
+  .comparison { gap: 9px; }
+  .comparison > span { transform: rotate(90deg); line-height: 1; }
+  .hero { padding-top: 4px; }
+  .hero-proof { padding: 23px; }
+  .section { margin-top: 40px; }
+  .panel { padding: 21px; }
+  .case-head { padding: 20px 19px 12px; }
+  .case-details { margin: 17px 19px 19px; padding: 0; }
+  .case-card > a { margin-left: 19px; margin-right: 19px; }
+  .case-card:not([data-case-row]) { padding: 20px; }
+  .case-card > .comparison, .case-card > .result-grid, .case-card > .finding, .case-card > p { margin-left: 19px; margin-right: 19px; }
+  th, td { padding: 13px 12px; }
+  .table-wrap { border-radius: 8px; }
+  .restoration-table { min-width: 630px; }
+  .toolbar { padding: 17px; }
+}
+@media (max-width: 420px) {
+  .stat-grid, .result-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 2.25rem; }
+  .stat-card { padding: 20px; }
+  .section-heading { gap: 11px; }
+  .case-meta { font-size: .85rem; }
+  .record { padding: 13px; }
+  .nav { gap: 10px 16px; }
+}
+@media print {
+  :root { font-size: 11pt; color: #152f31; background: #fff; }
+  body { background: #fff; }
+  main { width: 100%; max-width: none; padding: 0; }
+  .site-header { margin-bottom: 20px; color: #17353b; background: #fff; border-bottom: 1px solid #aab9af; }
+  .site-header > div, .site-header > .nav { width: 100%; }
+  .brand, .brand > span { color: #17353b; }
+  .site-header { padding: 0 0 15px; }
+  .skip-link, .nav a, .nav button, [data-enhancement], [data-print], .screen-reader-only,
+  .case-details, .technical, .query-card, pre { display: none !important; }
+  h1 { font-size: 28pt; }
+  h2 { font-size: 20pt; break-after: avoid; }
+  h3, h4, summary { break-after: avoid; }
+  .hero-grid, .two, .three, .comparison, .glossary { display: block; }
+  .hero-proof, .panel, .comparison > *, .two > *, .three > * { margin-bottom: 16px; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .section { margin-top: 28px; }
+  .panel, .case-card, .record, .query-card, details, .hero-proof, .stat-card { box-shadow: none; border-color: #bbc8be; }
+  .record, .stat-card, .finding, .metric { break-inside: avoid; }
+  .table-wrap, pre { overflow: visible; max-height: none; }
+  table, .restoration-table { min-width: 0; font-size: 10pt; }
+  th, td { padding: 9px; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  a { color: #174c43; }
+  [id]:target { outline: 0; }
+  .footer { margin-top: 26px; }
+  @page { margin: 17mm; }
+}
+</style></head>
+<body><a class="skip-link" href="#main">Skip to the report</a><header class="site-header"><div class="brand">Incident Evidence Lab<span>Make the evidence easier to understand.</span></div><nav class="nav" aria-label="Report sections"><a href="#results">Results</a><a href="#trials">Records</a><a href="#method">Method</a><a href="#reproduce">Verification</a><button type="button" data-print data-enhancement hidden>Print summary</button></nav></header>
+<main id="main"><section class="hero"><p class="eyebrow">Incident Evidence Lab · Bounded validator feedback</p><h1>Can a rejected answer become a supported one?</h1><p class="lead">A missing completion record does not prove that work failed. This lab lets a local model request evidence, checks its claims, and measures what happens when evidence is removed and restored.</p><p><strong>The experiment is complete; the declared AI demonstration remains incomplete.</strong></p><p>Publication <code>validator-feedback-2026-09-08-v1</code>.</p></section><section class="section" id="current"><h2>What changed</h2><p>The first answer still has its own result. In this optional workflow, the host can reject it and allow one model-authored revision in the same investigation. G gives a generic rejection. D gives specific findings from the existing validators. Both have identical initial tasks, evidence access, model settings and limits. This tests the value of specific feedback beyond another opportunity to answer.</p><p>The host never writes a replacement answer. The first accepted submission ends the trial. An independent evaluator grades it afterward and cannot request another answer. The earlier first-submission-terminal workflow and every historical result remain available.</p></section><section class="section" id="results"><h2>First answer and final workflow</h2><p>Each arm has 20 planned trials: 12 repeated incident checks, five fixtures and three saved Java views. These are familiar development cases. Repeated seeds are not new incident families. Counts overlap and must not be added as independent successes.</p><div class="table-wrap"><table><thead><tr><th>Mode</th><th>Attempted</th><th>First supported</th><th>First useful uncertainty</th><th>Recovered rejection</th><th>Final supported</th><th>Final useful uncertainty</th><th>Full requirements</th></tr></thead><tbody><tr><td>G</td><td>20/20</td><td>11/20</td><td>0/20</td><td>0/20</td><td>11/20</td><td>0/20</td><td>11/20</td></tr><tr><td>D</td><td>20/20</td><td>11/20</td><td>0/20</td><td>4/20</td><td>11/20</td><td>2/20</td><td>13/20</td></tr></tbody></table></div><p>A corrected schema is not proof of better diagnosis. A rejected claim is not a model expressing useful uncertainty. Useful uncertainty needs a valid unknown answer and the required observations. A checker-accepted answer can still miss the independent requirements.</p></section><section class="section" id="trials"><h2>Every planned result</h2><div class="table-wrap"><table><thead><tr><th>Mode / case / seed</th><th>State</th><th>Read records</th><th>Final structure</th><th>First host check</th><th>Final host check</th><th>Full requirements</th></tr></thead><tbody><tr><td><a href="feedback/50307e5ab3b14e7396ce8411aef2482d.html">G / interface-1 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/ed89d95486774740bef04827c96dfa93.html">D / interface-1 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/22eeee2f134342bebe62d4ba6b62ef1a.html">D / interface-2 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/52bb9e76ac68472fabf09f981b1d7094.html">G / interface-2 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/316dda471a7243208f010f75f7e4c4c5.html">G / interface-3 / baseline / 0</a></td><td>failed</td><td>True</td><td>False</td><td>False</td><td>no_model_proposal</td><td>False</td></tr><tr><td><a href="feedback/c76c75b952f14c96b609cbaa5a7218ef.html">D / interface-3 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>False</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/e865073e73114331a6f0cfc95ebc957c.html">D / interface-4 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>False</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/d5621302a2ee417f93f2629f0b655df2.html">G / interface-4 / baseline / 0</a></td><td>failed</td><td>True</td><td>True</td><td>False</td><td>rejected</td><td>False</td></tr><tr><td><a href="feedback/77d84f209b964a8da795b3b6ab909e75.html">D / interface-1 / baseline / 1</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/939c237b616749899c2dfac71caa086a.html">G / interface-1 / baseline / 1</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/40fa5f6d7c7241fe8bf723085593582c.html">G / interface-2 / baseline / 1</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/801505c3551a4683a87c5ef649352f51.html">D / interface-2 / baseline / 1</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/a26097c7e4da42058975249a77b695c5.html">D / interface-3 / baseline / 1</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/9f42c30346bc44518e7f0132ac294c4c.html">G / interface-3 / baseline / 1</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/ce002b7262d4408db7ed906dce054254.html">G / interface-4 / baseline / 1</a></td><td>failed</td><td>True</td><td>False</td><td>False</td><td>no_model_proposal</td><td>False</td></tr><tr><td><a href="feedback/79283f26016b425d8dd9ed065df0242d.html">D / interface-4 / baseline / 1</a></td><td>completed</td><td>True</td><td>True</td><td>False</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/eedeb91e790b455d9ddaf9514498be8a.html">G / interface-1 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/eadebbf4c6b14bdd913346297b3e592a.html">D / interface-1 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/af58fa4af5a64d3eb4dfa5c64d955896.html">D / interface-2 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/4e9dde1fef2e4ec8bbfc807d5d884e93.html">G / interface-2 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/1948dbea726e4531ae02b0013b95807a.html">G / interface-3 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/439f51000db24f41b33309173fdae4dd.html">D / interface-3 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/957422c6ba3d43999199b97b0db05f85.html">D / interface-4 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/a55f2b2f27b24356bc553178ba21c4d2.html">G / interface-4 / baseline / 2</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/2dc7c229999a4c279302984449797dcd.html">G / a1 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/fed425e341ad4dcc8ecaec1d446c4ba4.html">D / a1 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/e453158174c14037996991b60d58e69c.html">D / b2 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/1e85f5e5387043ac866db4132f677f96.html">G / b2 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/0c44f9faa25b48a8acac09174249760d.html">G / c3 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/e5293901d826439c8e0d153856bbe489.html">D / c3 / baseline / 0</a></td><td>completed</td><td>False</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/2b63979e4a7e4487adf6dd6b3bc1ab20.html">D / d4 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/dd8156d4c5da4c29be6a70b1bf29edfa.html">G / d4 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/9a10ccdf68624415a658c8e30eabcc6a.html">G / e5 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/ed9e7f6ab0154e08acf89ae3e7d47d40.html">D / e5 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/256f3297b4d347949e5feb1f680c8b0d.html">D / java_capture_1 / baseline / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/5aca999743d64d69bc5ad9fd9faf8f41.html">G / java_capture_1 / baseline / 0</a></td><td>failed</td><td>True</td><td>True</td><td>False</td><td>rejected</td><td>False</td></tr><tr><td><a href="feedback/28119e8a85074d4c9b95486ea6fb0c5f.html">G / java_capture_1 / reduced / 0</a></td><td>completed</td><td>False</td><td>True</td><td>True</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/a031b969dc464c80afbcfce1f407a8db.html">D / java_capture_1 / reduced / 0</a></td><td>completed</td><td>False</td><td>True</td><td>False</td><td>accepted</td><td>False</td></tr><tr><td><a href="feedback/b906b95ef1ec45e3b9dad4db809eda01.html">D / java_capture_1 / retain_status / 0</a></td><td>completed</td><td>True</td><td>True</td><td>True</td><td>accepted</td><td>True</td></tr><tr><td><a href="feedback/c992831b547e4913bda15125d39bbe07.html">G / java_capture_1 / retain_status / 0</a></td><td>failed</td><td>True</td><td>True</td><td>False</td><td>rejected</td><td>False</td></tr></tbody></table></div></section><section class="section" id="recovery"><h2>What recovery required</h2><div class="table-wrap"><table><thead><tr><th>Mode</th><th>Structure recovered</th><th>Revised diagnosis changed</th><th>Extra evidence returned</th><th>Recovered to unnecessary abstention</th><th>Extra generations</th><th>Extra reads</th><th>Seconds after feedback</th></tr></thead><tbody><tr><td>G</td><td>0</td><td>1</td><td>5</td><td>0</td><td>10</td><td>5</td><td>504.296</td></tr><tr><td>D</td><td>4</td><td>0</td><td>0</td><td>0</td><td>4</td><td>0</td><td>166.648</td></tr></tbody></table></div><p>Changes can overlap. Diagnosis and evidence changes describe revisions, including rejected revisions; they are not automatically successful recoveries. Time includes continuation and cleanup. Every trial page preserves the original proposal, safe feedback and any replacement beside their separate verdicts.</p></section><section class="section" id="method"><h2>Method and trust boundary</h2><p>Only a bounded recognizable final proposal can receive feedback: up to 16 KiB, 2,048 nodes and 12 levels, after native action-envelope checks. A schema-invalid proposal stays invalid until the model changes it. Malformed transport, unsafe or ambiguous actions and terminal execution stops remain fatal. Feedback is at most 4 KiB, uses static public rules, and has no access to golden outcomes, unqueried records or the evaluator.</p><p>The same installed Qwen3 8B thinking profile T is used in fresh contexts, with native tool calls and exact complete-input admission. No hidden reasoning is published or returned in history. Each trial permits two submissions and eight generations, with the existing 12-query/64-KiB total evidence budget, 600-second trial/evidence clocks, 300-second requests and 8,192 output tokens inside 32,768 context tokens. No clock or counter resets on rejection.</p><details><summary>Model, template and settings</summary><pre>{
+  &quot;model&quot;: {
+    &quot;model&quot;: &quot;ielab-qwen3-8b-tools-json:v1&quot;,
+    &quot;digest&quot;: &quot;e456fd3421017075d848f19344072c0c92fc2b95405d3e7ad4fc44c41821d274&quot;,
+    &quot;quantization&quot;: &quot;Q4_K_M&quot;,
+    &quot;template_sha256&quot;: &quot;4c287210ed61f985a48533cc08998c4513ffe26cb6e2b2a4ff394ba14fab26fd&quot;,
+    &quot;runtime_version&quot;: &quot;0.33.3&quot;,
+    &quot;runtime_binary_sha256&quot;: &quot;75b6b83ab9c06712c7097807c91d2bb86a3ef3dd143d59359a5fbb3314970c0a&quot;,
+    &quot;original_digest&quot;: &quot;500a1f067a9f782620b40bee6f7b0c89e17ae61f686b92c24933e4ca4b2b8b41&quot;,
+    &quot;original_template_sha256&quot;: &quot;ae370d884f108d16e7cc8fd5259ebc5773a0afa6e078b11f4ed7e39a27e0dfc4&quot;,
+    &quot;weights_reused_via_apfs_clones&quot;: true,
+    &quot;weight_layers&quot;: [
+      {
+        &quot;mediaType&quot;: &quot;application/vnd.ollama.image.model&quot;,
+        &quot;digest&quot;: &quot;sha256:a3de86cd1c132c822487ededd47a324c50491393e6565cd14bafa40d0b8e686f&quot;,
+        &quot;size&quot;: 5225374496
+      }
+    ]
+  },
+  &quot;profiles&quot;: [
+    {
+      &quot;profile&quot;: &quot;T&quot;,
+      &quot;thinking&quot;: true,
+      &quot;temperature&quot;: 0.6,
+      &quot;top_p&quot;: 0.95,
+      &quot;top_k&quot;: 20,
+      &quot;min_p&quot;: 0,
+      &quot;repeat_penalty&quot;: 1,
+      &quot;repeat_last_n&quot;: 64,
+      &quot;typical_p&quot;: 1,
+      &quot;presence_penalty&quot;: 0,
+      &quot;frequency_penalty&quot;: 0,
+      &quot;num_keep&quot;: 4,
+      &quot;context_tokens&quot;: 32768,
+      &quot;output_tokens&quot;: 8192,
+      &quot;request_seconds&quot;: 300,
+      &quot;investigation_seconds&quot;: 600,
+      &quot;stop&quot;: [
+        &quot;&lt;|im_start|&gt;&quot;,
+        &quot;&lt;|im_end|&gt;&quot;
+      ]
+    }
+  ]
+}</pre></details><p>The template alias reuses the original weight blobs. Its earlier JSON-serialization correction remains a project-local change, not a claimed official upstream fix. Protocol <code>20989ef66e3047d37fcb4d9e7aaf430c46ce82bed2e03bc42e019214f2a312cd</code>.</p></section><section class="section" id="qualification"><h2>Qualification and fresh Java</h2><p>D must pass all 12 incident checks, all five fixture requirements, supported completion in original/restored Java views, and appropriately investigated uncertainty in the reduced view. Generic mode cannot be substituted after seeing results.</p><pre>{
+  &quot;D&quot;: {
+    &quot;qualified&quot;: false,
+    &quot;incident_passes&quot;: 7,
+    &quot;incident_required&quot;: 12,
+    &quot;fixture_passes&quot;: 4,
+    &quot;fixture_required&quot;: 5,
+    &quot;saved_java_passes&quot;: 2,
+    &quot;saved_java_required&quot;: 3,
+    &quot;execution_safe&quot;: true
+  }
+}</pre><p>Fresh Java attempts: 0/3. no_profile_qualified</p></section><section class="section" id="effort"><h2>Measured effort</h2><pre>{
+  &quot;http_attempts&quot;: 441,
+  &quot;generations&quot;: 145,
+  &quot;setup_generations&quot;: 7,
+  &quot;investigation_generations&quot;: 138,
+  &quot;render_requests&quot;: 145,
+  &quot;metadata_requests&quot;: 6,
+  &quot;input_tokens&quot;: 627181,
+  &quot;output_tokens&quot;: 90433,
+  &quot;eval_seconds&quot;: 5315.989652995,
+  &quot;generation_request_seconds&quot;: 6453.251885,
+  &quot;elapsed_seconds&quot;: 6494.729247500013,
+  &quot;unknown_usage_calls&quot;: 0,
+  &quot;thinking_present_calls&quot;: 145,
+  &quot;thinking_utf8_bytes&quot;: 374894,
+  &quot;query_calls&quot;: 93,
+  &quot;query_bytes&quot;: 100612,
+  &quot;inventory_reads&quot;: 42,
+  &quot;record_reads&quot;: 46,
+  &quot;underlying_http_requests&quot;: null,
+  &quot;operating_cost_usd&quot;: null,
+  &quot;unfinished&quot;: [],
+  &quot;tokenization_requests&quot;: 145
+}</pre><p>HTTP counts include metadata, render, tokenizer and generation attempts at the application-to-runtime boundary. Tokens count repeated input and runtime-reported output, including thinking without a separate split. Unknown observations stay unknown. Limits: 360 generations, 1,500 HTTP attempts and four hours including gaps. No paid service was used; hardware, electricity and maintenance cost were not measured.</p></section><section class="section" id="reproduce"><h2>Verification and limitations</h2><p>741 tests passed in 150.52 seconds from a clean source-only export. No skips or failures. Targeted development tests overlap this suite. A separate pinned-Docker assembled mock passed with four scripted local HTTP replies, two broker queries and two separately authored scripted submissions; it is not live-model evidence.</p><p>Same-machine reproduction used 179 source-only files, pinned Python 3.12 dependencies already installed, and verified imports from the exported src directory. Existing Docker/runtime/model assets were reused. Historical capture-backed experiment commands require the preserved predecessor evidence; fixture workflows and synthetic software tests are source-only reproducible. This is not independent outside reproduction.</p><p>Read-only automated review inspected the actual diff, historical rejection records and tests. It found and prompted fixes to serialization, validator-versus-checker labels, feedback dispatch status, extra-generation accounting and a setup-value measurement. It did not independently execute inference or endorse results as an outside human reviewer. Final record reconciliation found all 20 paired initial request hashes equal, but only four pairs had identical first proposal objects. Those first-pass differences precede feedback and cannot be attributed to it. All 145 exact input measurements matched runtime-reported prompt counts; 55 frozen source inputs and 4,007 historical files remained unchanged.</p><p>This is one quantized local model, one machine and known synthetic cases. It does not establish production reliability, unseen-case accuracy or a general advantage from thinking or feedback. Fixed rules, mocks, real-model inference and saved Java replay remain separate. API approval remains revoked; subscription-backed incident execution remains disabled.</p><p><a href="feedback/summary.json">Complete sanitized records, including setup and fixed references</a> · <a href="v8-index.html">Unchanged previous result</a></p></section><footer class="footer"><strong>Built from saved results.</strong> These controls do not run new experiments or change the application. No records leave this page through the report controls. Original data stays available below the summaries.</footer></main><script>
+(() => {
+  'use strict';
+  const panels = Array.from(document.querySelectorAll('[data-view-panel]'));
+  const viewSelect = document.getElementById('evidence-view');
+  const caseFilter = document.getElementById('case-filter');
+  const caseSearch = document.getElementById('case-search');
+  const viewStatus = document.getElementById('view-status');
+  const panelForId = id => panels.find(panel => panel.id === id);
+  let selectedId = viewSelect && panelForId(viewSelect.value)
+    ? viewSelect.value : (panels[0] ? panels[0].id : null);
+
+  function clearFilters() {
+    if (caseFilter) caseFilter.value = 'all';
+    if (caseSearch) caseSearch.value = '';
+  }
+
+  function updateView(announce = true) {
+    const filter = caseFilter ? caseFilter.value : 'all';
+    const terms = caseSearch ? caseSearch.value.trim().toLowerCase().split(/\s+/).filter(Boolean) : [];
+    panels.forEach(panel => {
+      panel.hidden = panel.id !== selectedId;
+      const rows = Array.from(panel.querySelectorAll('[data-case-row]'));
+      let shown = 0;
+      rows.forEach(row => {
+        const matchesKind = filter === 'all'
+          || (filter === 'changed' && row.dataset.changed === 'true')
+          || (filter === 'unresolved' && row.dataset.unresolved === 'true');
+        const words = (row.dataset.caseSearch || '').toLowerCase();
+        const matchesSearch = terms.every(term => words.includes(term));
+        row.hidden = !(matchesKind && matchesSearch);
+        if (!row.hidden) shown += 1;
+      });
+      const count = `${shown} of ${rows.length} ${rows.length === 1 ? 'case' : 'cases'} shown.`;
+      panel.querySelectorAll('[data-case-count]').forEach(output => { output.textContent = count; });
+      panel.querySelectorAll('[data-empty-state]').forEach(empty => { empty.hidden = shown !== 0; });
+      if (announce && panel.id === selectedId && viewStatus) {
+        const label = panel.dataset.viewLabel || 'Selected evidence';
+        viewStatus.textContent = rows.length ? `${label}. ${count}` : `${label}. Showing this saved test.`;
+      }
+    });
+    if (viewSelect && selectedId) viewSelect.value = selectedId;
+  }
+
+  function selectView(id, reset = false) {
+    if (!panelForId(id)) return false;
+    selectedId = id;
+    if (reset) clearFilters();
+    updateView();
+    return true;
+  }
+
+  function revealTarget(target) {
+    if (!target) return;
+    const owner = target.closest('[data-view-panel]');
+    if (owner) selectView(owner.id, true);
+    let ancestor = target;
+    while (ancestor) {
+      if (ancestor.tagName === 'DETAILS') ancestor.open = true;
+      ancestor = ancestor.parentElement;
+    }
+    if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+    target.focus({preventScroll: true});
+    target.scrollIntoView({block: 'start', behavior: 'auto'});
+  }
+
+  function targetFromHash(hash) {
+    if (!hash || hash === '#') return null;
+    try { return document.getElementById(decodeURIComponent(hash.slice(1))); }
+    catch (_) { return null; }
+  }
+
+  function revealHash() {
+    revealTarget(targetFromHash(window.location.hash));
+  }
+
+  if (viewSelect) viewSelect.addEventListener('change', () => selectView(viewSelect.value));
+  if (caseFilter) caseFilter.addEventListener('change', () => updateView());
+  if (caseSearch) caseSearch.addEventListener('input', () => updateView());
+  document.addEventListener('click', event => {
+    if (!(event.target instanceof Element)) return;
+    const evidenceLink = event.target.closest('a[data-evidence-link]');
+    const viewLink = event.target.closest('a[data-show-view]');
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (evidenceLink) {
+      const target = targetFromHash(evidenceLink.hash);
+      if (!target) return;
+      event.preventDefault();
+      revealTarget(target);
+      if (window.location.hash !== evidenceLink.hash) window.location.hash = evidenceLink.hash;
+    } else if (viewLink && selectView(viewLink.dataset.showView, true)) {
+      event.preventDefault();
+      const target = panelForId(viewLink.dataset.showView);
+      revealTarget(target);
+      if (viewLink.hash && window.location.hash !== viewLink.hash) window.location.hash = viewLink.hash;
+    }
+    const printButton = event.target.closest('[data-print]');
+    if (printButton) window.print();
+  });
+  window.addEventListener('hashchange', revealHash);
+
+  // Print CSS keeps the current view and filters and omits raw detail.
+
+  updateView(false);
+  document.querySelectorAll('[data-enhancement]').forEach(control => { control.hidden = false; });
+  document.documentElement.classList.add('is-interactive');
+  revealHash();
+})();
+</script></body></html>
